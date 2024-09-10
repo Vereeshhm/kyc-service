@@ -1,18 +1,18 @@
 package com.saswat.kyc.serviceimpl;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.saswat.kyc.dto.IndividualPanRequest;
@@ -25,9 +25,6 @@ import com.saswat.kyc.utils.PropertiesConfig;
 
 @Service
 public class Individualpanserviceimpl implements Individualpanservice {
-
-	@Autowired
-	RestTemplate restTemplate;
 
 	@Autowired
 	IndividualPanApiLogRepository apiLogRepository;
@@ -46,19 +43,23 @@ public class Individualpanserviceimpl implements Individualpanservice {
 		String response1 = null;
 		IndividualPanApiLog apilog = new IndividualPanApiLog();
 
+		HttpURLConnection connection = null;
+
 		try {
 
 			Gson gson = new Gson();
-
 			String requestBodyJson = gson.toJson(panRequest);
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.set("Authorization", propertiesConfig.getToken());
-			headers.set("x-client-unique-id", propertiesConfig.getXclientuniqueid());
-			
+			String urlParameters = requestBodyJson;
 
-			HttpEntity<String> entity = new HttpEntity<>(requestBodyJson, headers);
+			URL url = new URL(propertiesConfig.getIndividualPanUrl());
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setRequestProperty("Accept", "application/json");
+			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
+			connection.setDoOutput(true);
 
+			// Log and Save Request Body
 			apilog.setUrl(propertiesConfig.getIndividualPanUrl());
 			apilog.setRequestBody(requestBodyJson);
 			Individualpandetails indiviualpan = new Individualpandetails();
@@ -73,63 +74,73 @@ public class Individualpanserviceimpl implements Individualpanservice {
 
 			individualpandetailsrepository.save(indiviualpan);
 
-			logger.info("RequestBody" + requestBodyJson);
-			response1 = restTemplate.postForObject(propertiesConfig.getIndividualPanUrl(), entity, String.class);
-			String apiurl = propertiesConfig.getIndividualPanUrl();
-			logger.info("individual pan url " + apiurl);
-			apilog.setResponseBody(response1);
-			apilog.setStatus("SUCCESS");
-			apilog.setStatusCode(HttpStatus.OK.value());
-			apilog.setApiType("Individual pan verification");
+			// Send Request Body using DataOutputStream
+			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+				wr.writeBytes(urlParameters); // Writing URL-encoded parameters
+				wr.flush();
+			}
 
-			logger.info("RequestBody" + requestBodyJson);
-			response1 = restTemplate.postForObject(propertiesConfig.getIndividualPanUrl(), entity, String.class);
-			apilog.setResponseBody(response1);
-			apilog.setStatus("SUCCESS");
-			apilog.setStatusCode(HttpStatus.OK.value());
-			logger.info("ResponseBody" + response1);
+			int responseCode = connection.getResponseCode();
+			logger.info("RequestBody: " + requestBodyJson);
+			logger.info("individual pan url: " + propertiesConfig.getIndividualPanUrl());
+
+			// Check for success response
+			StringBuilder response = new StringBuilder();
+			if (responseCode == HttpStatus.OK.value()) {
+				// Reading Response
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine.trim());
+					}
+
+				}
+				response1 = response.toString();
+				apilog.setResponseBody(response1);
+				apilog.setStatus("SUCCESS");
+				apilog.setStatusCode(HttpStatus.OK.value());
+				apilog.setResponseBody(response1);
+				apilog.setApiType("Individual pan verification");
+				logger.info("ResponseBody: " + response1);
+			} else {
+				// Handle error stream
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
+
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine.trim());
+					}
+
+				}
+				response1 = response.toString();
+				apilog.setResponseBody(response1);
+				apilog.setStatus("FAILURE");
+				apilog.setStatusCode(responseCode);
+				apilog.setResponseBody(response1);
+				apilog.setApiType("Individual pan verification");
+				logger.error("Error ResponseBody: " + response1);
+			}
+
 			return response1;
-		} catch (HttpClientErrorException.TooManyRequests e) {
 
-			apilog.setStatusCode(HttpStatus.TOO_MANY_REQUESTS.value());
-			apilog.setStatus("FAILURE");
-			apilog.setApiType("Individual pan verification");
-			response1 = e.getResponseBodyAsString();
-			logger.error("ResponseBody" + response1);
-			apilog.setResponseBodyAsJson("API rate limit exceeded");
-		} catch (HttpClientErrorException.Unauthorized e) {
-
-			apilog.setStatusCode(HttpStatus.UNAUTHORIZED.value());
-			apilog.setApiType("Individual pan verification");
-			apilog.setStatus("FAILURE");
-			response1 = e.getResponseBodyAsString();
-
-			logger.error("ResponseBody" + response1);
-			apilog.setResponseBodyAsJson("No API key found in request");
-
-		} catch (HttpClientErrorException e) {
-			apilog.setStatusCode(e.getStatusCode().value());
-			apilog.setApiType("Individual pan verification");
-			apilog.setStatus("FAILURE");
-			response1 = e.getResponseBodyAsString();
-			logger.error("ResponseBody" + response1);
-			apilog.setResponseBody(response1);
-
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			apilog.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			apilog.setStatus("ERROR");
 			apilog.setApiType("Individual pan verification");
 			response1 = e.getMessage();
+			apilog.setResponseBody(response1);
 			String errorMessage = "Error inserting into pan_verification_logs: " + e.getMessage();
 			System.err.println(errorMessage);
-			logger.error("ResponseBody" + response1);
+			logger.error("ResponseBody: " + response1);
 			apilog.setResponseBody(response1);
-		}
-
-		finally {
+		} finally {
 			apiLogRepository.save(apilog);
+			if (connection != null) {
+				connection.disconnect();
+			}
 		}
 		return response1;
 	}

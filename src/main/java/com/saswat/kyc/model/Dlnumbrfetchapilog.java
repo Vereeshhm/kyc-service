@@ -3,10 +3,6 @@ package com.saswat.kyc.model;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import org.hibernate.annotations.Type;
-
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,8 +22,7 @@ public class Dlnumbrfetchapilog {
 
 	private String url;
 
-	@Type(JsonBinaryType.class)
-	@Column(columnDefinition = "jsonb")
+	@Column(columnDefinition = "TEXT")
 	private String requestBody;
 
 	@Column(columnDefinition = "TEXT")
@@ -36,7 +31,17 @@ public class Dlnumbrfetchapilog {
 
 	private int statusCode;
 	private LocalDateTime timestamp = LocalDateTime.now();
+	private String apiType;
+	
 
+	public String getApiType() {
+		return apiType;
+	}
+
+	public void setApiType(String apiType) {
+		this.apiType = apiType;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -89,7 +94,5 @@ public class Dlnumbrfetchapilog {
 		this.timestamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 	}
 
-	public void setResponseBodyAsJson(String message) {
-		this.responseBody = "{\"message\": \"" + message.replace("\"", "\\\"") + "\"}";
-	}
+
 }

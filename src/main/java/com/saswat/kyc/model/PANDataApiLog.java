@@ -3,8 +3,7 @@ package com.saswat.kyc.model;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import org.hibernate.annotations.Type;
-
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 import jakarta.persistence.Column;
@@ -26,13 +25,11 @@ public class PANDataApiLog {
 
 	private String url;
 
-	@Type(JsonBinaryType.class)
-	@Column(columnDefinition = "jsonb")
+	@Column(columnDefinition = "TEXT")
 	private String requestBody;
 
 
 	@Column(columnDefinition = "TEXT")
-
 	private String responseBody;
 
 	private int statusCode;

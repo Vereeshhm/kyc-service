@@ -55,16 +55,16 @@ public class PropertiesConfig {
 		Aaadhar_Url = aaadhar_Url;
 	}
 
-	@Value("${x-client-unique-id}")
-	private String xclientuniqueid;
-
-	public String getXclientuniqueid() {
-		return xclientuniqueid;
-	}
-
-	public void setXclientuniqueid(String xclientuniqueid) {
-		this.xclientuniqueid = xclientuniqueid;
-	}
+//	@Value("${x-client-unique-id}")
+//	private String xclientuniqueid;
+//
+//	public String getXclientuniqueid() {
+//		return xclientuniqueid;
+//	}
+//
+//	public void setXclientuniqueid(String xclientuniqueid) {
+//		this.xclientuniqueid = xclientuniqueid;
+//	}
 
 	public String getVoterverificationApiUrl() {
 		return voterverificationApiUrl;

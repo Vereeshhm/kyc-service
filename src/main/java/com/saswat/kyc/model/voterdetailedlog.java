@@ -3,8 +3,7 @@ package com.saswat.kyc.model;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import org.hibernate.annotations.Type;
-
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 import jakarta.persistence.Column;
@@ -27,14 +26,25 @@ public class voterdetailedlog {
 
 	private String url;
 
-	@Type(JsonBinaryType.class)
-	@Column(columnDefinition = "jsonb")
+	@Column(columnDefinition = "TEXT")
 	private String requestBody;
 
+	@Column(columnDefinition = "TEXT")
 	private String responseBody;
 
 	private int statusCode;
+
 	private LocalDateTime timestamp = LocalDateTime.now();
+
+	private String apiType;
+
+	public String getApiType() {
+		return apiType;
+	}
+
+	public void setApiType(String apiType) {
+		this.apiType = apiType;
+	}
 
 	public Long getId() {
 		return id;
@@ -88,7 +98,4 @@ public class voterdetailedlog {
 		this.timestamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 	}
 
-	public void setResponseBodyAsJson(String message) {
-		this.responseBody = "{\"message\": \"" + message.replace("\"", "\\\"") + "\"}";
-	}
 }

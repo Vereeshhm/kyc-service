@@ -28,6 +28,9 @@ public class AadharApiLogsImpl implements AadharApiLogs {
 			aadharEntity.setResponsePacket(responsePacket);
 			aadharEntity.setApiName(apiName);
 			aadharEntity.setTimeStamp(date);
+			
+		
+	
 			aadharRepository.save(aadharEntity);
 
 		} catch (Exception e) {

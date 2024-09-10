@@ -69,7 +69,7 @@ public class PANDataServiceImpl implements PANDataService {
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 
-			connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
+			//connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 
 			connection.setDoOutput(true);
 

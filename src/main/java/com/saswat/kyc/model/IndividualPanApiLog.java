@@ -3,10 +3,6 @@ package com.saswat.kyc.model;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import org.hibernate.annotations.Type;
-
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,13 +22,11 @@ public class IndividualPanApiLog {
 
 	private String url;
 
-	@Type(JsonBinaryType.class)
-	@Column(columnDefinition = "jsonb")
+	@Column(columnDefinition = "TEXT")
 	private String requestBody;
 
 
 	@Column(columnDefinition = "TEXT")
-
 	private String responseBody;
 
 	private int statusCode;
@@ -107,10 +101,7 @@ public class IndividualPanApiLog {
 		this.status = status;
 	}
 
-	public void setResponseBodyAsJson(String message) {
-		this.responseBody = "{\"message\": \"" + message.replace("\"", "\\\"") + "\"}";
-	}
-
+	
 
 	public IndividualPanApiLog() {
 		this.timestamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);

@@ -1,5 +1,8 @@
 package com.saswat.kyc.serviceimpl;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,13 +11,14 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.saswat.kyc.dto.AadharRequest;
+import com.saswat.kyc.model.Aadharrequestenity;
+import com.saswat.kyc.repository.Aadharrequestenityrepository;
 import com.saswat.kyc.service.AadharApiLogs;
 import com.saswat.kyc.service.AadharService;
 import com.saswat.kyc.utils.PropertiesConfig;
 
 @Service
 public class AadharServiceImpl implements AadharService {
-
 
 	@Autowired
 	PropertiesConfig propertiesconfig;
@@ -24,6 +28,8 @@ public class AadharServiceImpl implements AadharService {
 
 	@Autowired
 	AadharApiLogs aadharApiLogs;
+	@Autowired
+	Aadharrequestenityrepository aadharrequestenityrepository;
 
 	@Override
 	public String fetchAatharVerification(AadharRequest aadharRequest) {
@@ -38,7 +44,13 @@ public class AadharServiceImpl implements AadharService {
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", propertiesconfig.getToken());
-			
+
+			Aadharrequestenity aadharrequestenity = new Aadharrequestenity();
+			aadharrequestenity.setUid(aadharRequest.getUid());
+			aadharrequestenity.setStatusmsg("successfully sent");
+			aadharrequestenity.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
+			aadharrequestenityrepository.save(aadharrequestenity);
 			headers.set("Content-Type", "application/json");
 
 			HttpEntity<AadharRequest> requestEntity = new HttpEntity<AadharRequest>(aadharRequest, headers);
@@ -47,6 +59,7 @@ public class AadharServiceImpl implements AadharService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			Response = e.getMessage();
+
 			aadharApiLogs.saveAAdharApiLogs(requestPacket, Response, apiName, timeStamp);
 			return Response;
 		}

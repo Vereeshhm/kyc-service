@@ -1,12 +1,9 @@
 package com.saswat.kyc.serviceimpl;
 
-import java.io.File;
-import java.util.Collections;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,10 +13,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.saswat.kyc.dto.FileResponse;
 import com.saswat.kyc.dto.PanFileData;
 import com.saswat.kyc.model.FileApiLog;
 import com.saswat.kyc.model.PanExtractionApiLog;
@@ -39,60 +35,58 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 
 	@Autowired
 	FileApiLogRepository fileapiLogRepository;
-	
+
 	@Autowired
 	PanExtractionApiLogRepository extractionapiLogRepository;
-	
 
 	@Autowired
 	PropertiesConfig propertiesConfig;
 
-	private String directURL;
+//	private String directURL;
 
 	private static final Logger logger = LoggerFactory.getLogger(PanExtractionServiceImpl.class);
 
-	@Override
-	public FileResponse getFileData(HttpServletRequest request, HttpServletResponse response1) {
+	public String getFileData(MultipartFile file, String ttl, HttpServletRequest request,
+			HttpServletResponse response1) {
 
 		logger.info("Starting getFileData method.");
-		FileResponse response = null;
 		FileApiLog apiLog = new FileApiLog();
 		String url = propertiesConfig.getPanextractionfileurl();
 
 		try {
-			String filePath = "C:/Users/VereeshHereemata/Pictures/WhatsApp Image 2024-06-20 at 5.21.00 PM.jpeg";
-			String ttl = "3 years";
 			String requestURL = request.getRequestURI().toString();
 
-			logger.info("Request URL: {}", requestURL);
-			logger.info("File path: {}, TTL: {}", filePath, ttl);
+			logger.info("Request URL: {}", url);
+			logger.info("TTL: {}", ttl);
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-			Gson gson = new GsonBuilder().create();
+			// Construct the request body
 			MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-			File file = new File(filePath);
-			body.add("file", new FileSystemResource(file));
+			body.add("file", new ByteArrayResource(file.getBytes()) {
+				@Override
+				public String getFilename() {
+					return file.getOriginalFilename();
+				}
+			});
 			body.add("ttl", ttl);
 
-			String requestBodyJson = "{ \"file\": \"" + file.getName() + "\", \"ttl\": \"" + ttl + "\" }";
 			HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
 			apiLog.setUrl(requestURL);
-			apiLog.setRequestBody(requestBodyJson);
+			apiLog.setRequestBody("TTL: " + ttl); // Avoid logging large file data
 
-			logger.info("Sending request to API with body: {}", requestBodyJson);
-			response = restTemplate.postForObject(url, requestEntity, FileResponse.class);
-			apiLog.setResponseBody(gson.toJson(response));
+			logger.info("Sending request to API with body: TTL: {}", ttl);
+			String responseBody = restTemplate.postForObject(url, requestEntity, String.class);
+			apiLog.setResponseBody(responseBody);
 
 			apiLog.setStatusCode(HttpStatus.OK.value());
 			apiLog.setStatus("SUCCESS");
 
-			this.directURL = response.getFile().getDirectURL();
-			logger.info("Direct URL: {}", directURL);
+			logger.info("Response body: {}", responseBody);
 
-			return response;
+			return responseBody; // Return the full JSON response as a string
 		} catch (HttpClientErrorException e) {
 			logger.error("HTTP client error during file data retrieval", e);
 			apiLog.setStatusCode(e.getStatusCode().value());
@@ -103,7 +97,7 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 
 			response1.setStatus(e.getStatusCode().value());
 			response1.setContentType("application/json");
-			return new FileResponse();
+			return "Error: " + responseBody; // Return an error message as a string
 		} catch (Exception e) {
 			logger.error("Unexpected error during file data retrieval", e);
 			apiLog.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -112,7 +106,7 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 			apiLog.setResponseBody(responseBody);
 			response1.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			response1.setContentType("application/json");
-			return new FileResponse();
+			return "Unexpected error: " + responseBody; // Return an unexpected error message as a string
 		} finally {
 			fileapiLogRepository.save(apiLog);
 			logger.info("File data retrieval process completed, API log saved.");
@@ -127,14 +121,12 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 		String response = null;
 
 		try {
-			
-			panfiledata.setFiles(Collections.singletonList(this.directURL));
 
-			logger.info("Direct URL set in files parameter: {}", panfiledata.getFiles().get(0));
-		
+			//logger.info("Direct URL set in files parameter: {}", panfiledata.getFiles().get(0));
 
 			// Optional: Retrieve other properties from pandto (type, getRelativeData)
-			logger.info("PAN DTO details - Type: {}, GetRelativeData: {}", panfiledata.getType(), panfiledata.isGetRelativeData());
+			logger.info("PAN DTO details - Type: {}, GetRelativeData: {}", panfiledata.getType(),
+					panfiledata.isGetRelativeData());
 
 			Gson gson = new Gson();
 			String requestBodyJson = gson.toJson(panfiledata);
@@ -149,7 +141,7 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 
 			logger.info("Sending PAN extraction request with body: {}", requestBodyJson);
 			response = restTemplate.postForObject(propertiesConfig.getPanextractionurl(), entity, String.class);
-			logger.info("PAN extraction successful." +response);
+			logger.info("PAN extraction successful." + response);
 			apiLog.setResponseBody(response);
 			apiLog.setStatusCode(HttpStatus.OK.value());
 			apiLog.setStatus("SUCCESS");
