@@ -16,6 +16,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
+
 @Table(name = "voter_detailed_search_logs")
 public class voterdetailedlog {
 
@@ -29,8 +30,6 @@ public class voterdetailedlog {
 	@Type(JsonBinaryType.class)
 	@Column(columnDefinition = "jsonb")
 	private String requestBody;
-
-	@Column(columnDefinition = "TEXT")
 
 	private String responseBody;
 

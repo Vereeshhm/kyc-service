@@ -46,8 +46,7 @@ public class VoterServiceImpl implements Voterservice {
 
 		try {
 			String APIURL = propertiesconfig.getVoterdetailedsearchApiURl();
-	
-			
+
 			logger.info("API URL: {}", APIURL);
 
 			HttpHeaders headers = new HttpHeaders();
@@ -79,7 +78,10 @@ public class VoterServiceImpl implements Voterservice {
 			logger.error("Unauthorized access - No API key found: {}", e.getMessage());
 			apiLog.setStatusCode(HttpStatus.UNAUTHORIZED.value());
 
-			response1 = e.getResponseBodyAsString();        
+			response1 = e.getResponseBodyAsString();
+
+			response1 = e.getResponseBodyAsString();
+
 			apiLog.setResponseBodyAsJson("No API key found in request");
 		} catch (HttpClientErrorException e) {
 			logger.error("HTTP error occurred: {}", e.getMessage());
@@ -109,9 +111,7 @@ public class VoterServiceImpl implements Voterservice {
 
 		try {
 			String APIURL = propertiesconfig.getVotersearchApiURl();
-		
 
-			
 			logger.info("API URL: {}", APIURL);
 
 			HttpHeaders headers = new HttpHeaders();

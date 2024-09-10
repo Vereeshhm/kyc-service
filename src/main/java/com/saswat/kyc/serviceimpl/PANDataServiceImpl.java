@@ -40,8 +40,10 @@ public class PANDataServiceImpl implements PANDataService {
 //	@Autowired
 //	private HikariDataSource dataSource;
 
+
 	@Autowired
 	Panfetchv3detailsrepository panfetchv3detailsrepository;
+
 
 	@Override
 	public String getPanDetails(panfetchrequest fetchrequest) {
@@ -57,6 +59,7 @@ public class PANDataServiceImpl implements PANDataService {
 
 			logger.info("API URL: {}", APIURL);
 
+
 			Gson gson = new Gson();
 			String requestBodyJson = gson.toJson(fetchrequest);
 
@@ -65,13 +68,16 @@ public class PANDataServiceImpl implements PANDataService {
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
+
 			connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
+
 			connection.setDoOutput(true);
 
 			apiLog.setUrl(APIURL);
 			apiLog.setRequestBody(requestBodyJson);
 			logger.info("RequestBody: {}", requestBodyJson);
 			apiLog.setAuthorizationToken(propertiesConfig.getToken());
+
 			Panfetchv3details fetchdetails = new Panfetchv3details();
 
 			fetchdetails.setAuthorizationToken(propertiesConfig.getToken());
@@ -82,6 +88,10 @@ public class PANDataServiceImpl implements PANDataService {
 			fetchdetails.setStatusmsg("successfully sent");
 
 			panfetchv3detailsrepository.save(fetchdetails);
+
+
+			
+
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
 				wr.writeBytes(requestBodyJson);
 				wr.flush();
@@ -106,6 +116,7 @@ public class PANDataServiceImpl implements PANDataService {
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 				apiLog.setStatusCode(HttpStatus.OK.value());
 				apiLog.setResponseBody(response1);
+
 				apiLog.setApiType("Pan fetch v3 ");
 				apiLog.setStatusmsg("Success");
 
@@ -118,6 +129,7 @@ public class PANDataServiceImpl implements PANDataService {
 				fetchdetails.setName(name);
 
 				panfetchv3detailsrepository.save(fetchdetails);
+
 
 				return response1;
 			} else {
@@ -143,8 +155,10 @@ public class PANDataServiceImpl implements PANDataService {
 		HttpStatus status = HttpStatus.valueOf(responseCode);
 		apiLog.setStatusCode(responseCode);
 		apiLog.setResponseBody(responseBody);
+
 		apiLog.setApiType("Pan fetch v3 ");
 		apiLog.setStatusmsg("Failure");
+
 		logger.error("Handling HTTP error. Status code: {}, Response body: {}", responseCode, responseBody);
 
 		switch (status) {
@@ -166,6 +180,7 @@ public class PANDataServiceImpl implements PANDataService {
 	private void handleGeneralError(Exception e, PANDataApiLog apiLog) {
 		apiLog.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		apiLog.setResponseBody(e.getMessage());
+
 		apiLog.setApiType("Pan fetch v3 ");
 
 		apiLog.setStatusmsg("Failure");
@@ -178,6 +193,7 @@ public class PANDataServiceImpl implements PANDataService {
 		fetchdetails.setUrl(propertiesConfig.getPanApiURL());
 		fetchdetails.setStatusmsg("failed");
 		panfetchv3detailsrepository.save(fetchdetails);
+
 		logger.error("Exception occurred: {}", e.getMessage(), e);
 	}
 

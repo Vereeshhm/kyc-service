@@ -31,6 +31,7 @@ public class Dlnumbrfetchapilog {
 	private String requestBody;
 
 	@Column(columnDefinition = "TEXT")
+
 	private String responseBody;
 
 	private int statusCode;

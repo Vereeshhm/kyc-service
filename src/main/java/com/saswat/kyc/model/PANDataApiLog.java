@@ -30,13 +30,16 @@ public class PANDataApiLog {
 	@Column(columnDefinition = "jsonb")
 	private String requestBody;
 
+
 	@Column(columnDefinition = "TEXT")
+
 	private String responseBody;
 
 	private int statusCode;
 	private LocalDateTime timestamp = LocalDateTime.now();
 
 	private String authorizationToken;
+
 	
 	private String apiType;
 	

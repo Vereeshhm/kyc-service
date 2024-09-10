@@ -38,6 +38,7 @@ public class AadharServiceImpl implements AadharService {
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", propertiesconfig.getToken());
+			
 			headers.set("Content-Type", "application/json");
 
 			HttpEntity<AadharRequest> requestEntity = new HttpEntity<AadharRequest>(aadharRequest, headers);

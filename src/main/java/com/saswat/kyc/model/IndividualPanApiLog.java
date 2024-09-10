@@ -30,7 +30,9 @@ public class IndividualPanApiLog {
 	@Column(columnDefinition = "jsonb")
 	private String requestBody;
 
+
 	@Column(columnDefinition = "TEXT")
+
 	private String responseBody;
 
 	private int statusCode;
@@ -39,6 +41,7 @@ public class IndividualPanApiLog {
 
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime timestamp = LocalDateTime.now();
+
 	
 	private String apiType;
 	
@@ -50,6 +53,7 @@ public class IndividualPanApiLog {
 	public void setApiType(String apiType) {
 		this.apiType = apiType;
 	}
+
 
 	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;

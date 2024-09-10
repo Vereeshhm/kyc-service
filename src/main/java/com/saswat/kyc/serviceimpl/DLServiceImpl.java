@@ -48,7 +48,7 @@ public class DLServiceImpl implements DLService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.set("Authorization", propertiesConfig.getToken()); // Include API key directly without
-																					// "Bearer" prefix
+
 			String requestBody = "{\"number\": \"" + dlverificationrequest.getNumber() + "\", \"dob\": \""
 					+ dlverificationrequest.getDob() + "\", \"issueDate\": \"" + dlverificationrequest.getIssueDate()
 					+ "\"}";
@@ -94,6 +94,7 @@ public class DLServiceImpl implements DLService {
 		catch (HttpClientErrorException e) {
 			logger.error("HTTP client error during DL verification", e);
 			apiLog.setStatusCode(e.getStatusCode().value());
+
 			response1 = e.getResponseBodyAsString();
 			System.out.println(response1 + " Response ");
 			apiLog.setResponseBody(response1);
@@ -123,7 +124,8 @@ public class DLServiceImpl implements DLService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.set("Authorization", propertiesConfig.getToken()); // Include API key directly without
-																					// "Bearer" prefix
+
+			
 			String requestBody = "{\"number\": \"" + dlnumberrequest.getNumber() + "\", \"dob\": \""
 					+ dlnumberrequest.getDob() + "\"}";
 

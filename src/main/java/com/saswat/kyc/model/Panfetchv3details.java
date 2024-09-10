@@ -18,7 +18,6 @@ public class Panfetchv3details {
 	
 	private Long id;
 	
-	
 	private String name;
 
 	private String number;

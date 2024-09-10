@@ -30,7 +30,9 @@ public class Dlverificationapilog {
 	@Column(columnDefinition = "jsonb")
 	private String requestBody;
 
+
 	@Column(columnDefinition = "TEXT")
+
 	private String responseBody;
 
 	private int statusCode;

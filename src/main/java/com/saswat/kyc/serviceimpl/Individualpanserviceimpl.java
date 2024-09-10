@@ -55,6 +55,7 @@ public class Individualpanserviceimpl implements Individualpanservice {
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.set("Authorization", propertiesConfig.getToken());
 			headers.set("x-client-unique-id", propertiesConfig.getXclientuniqueid());
+			
 
 			HttpEntity<String> entity = new HttpEntity<>(requestBodyJson, headers);
 
@@ -80,6 +81,12 @@ public class Individualpanserviceimpl implements Individualpanservice {
 			apilog.setStatus("SUCCESS");
 			apilog.setStatusCode(HttpStatus.OK.value());
 			apilog.setApiType("Individual pan verification");
+
+			logger.info("RequestBody" + requestBodyJson);
+			response1 = restTemplate.postForObject(propertiesConfig.getIndividualPanUrl(), entity, String.class);
+			apilog.setResponseBody(response1);
+			apilog.setStatus("SUCCESS");
+			apilog.setStatusCode(HttpStatus.OK.value());
 			logger.info("ResponseBody" + response1);
 			return response1;
 		} catch (HttpClientErrorException.TooManyRequests e) {

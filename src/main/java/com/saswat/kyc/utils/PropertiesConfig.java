@@ -47,6 +47,14 @@ public class PropertiesConfig {
 	@Value("${Aaadhar_Url}")
 	private String Aaadhar_Url;
 
+	public String getAaadhar_Url() {
+		return Aaadhar_Url;
+	}
+
+	public void setAaadhar_Url(String aaadhar_Url) {
+		Aaadhar_Url = aaadhar_Url;
+	}
+
 	@Value("${x-client-unique-id}")
 	private String xclientuniqueid;
 
@@ -56,14 +64,6 @@ public class PropertiesConfig {
 
 	public void setXclientuniqueid(String xclientuniqueid) {
 		this.xclientuniqueid = xclientuniqueid;
-	}
-
-	public String getAaadhar_Url() {
-		return Aaadhar_Url;
-	}
-
-	public void setAaadhar_Url(String aaadhar_Url) {
-		Aaadhar_Url = aaadhar_Url;
 	}
 
 	public String getVoterverificationApiUrl() {

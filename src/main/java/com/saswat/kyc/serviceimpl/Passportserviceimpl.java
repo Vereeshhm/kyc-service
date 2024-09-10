@@ -50,6 +50,7 @@ public class Passportserviceimpl implements Passportservice {
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
+
 			headers.set("Authorization", propertiesconfig.getToken());
 
 			Gson gson = new Gson();
@@ -114,6 +115,7 @@ public class Passportserviceimpl implements Passportservice {
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
+
 			headers.set("Authorization", propertiesconfig.getToken());
 
 			Gson gson = new Gson();

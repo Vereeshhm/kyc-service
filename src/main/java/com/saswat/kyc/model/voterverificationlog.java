@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "voter_verification_logss")
+
 public class voterverificationlog {
 
 	@Id
