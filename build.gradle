@@ -1,0 +1,136 @@
+plugins {
+    id("java")
+    id("org.springframework.boot") version "3.2.8"
+    id("io.spring.dependency-management") version "1.1.6"
+}
+
+group = "com.saswat"
+version = "0.0.1"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-rest")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+   
+
+    //implementation 'org.hibernate:hibernate-core:5.4.0.Final'
+implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+implementation group: 'jakarta.activation', name: 'jakarta.activation-api', version: '2.1.3'
+implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
+ 	
+implementation group: 'com.vladmihalcea', name: 'hibernate-types-60', version: '2.21.1'
+    
+    compileOnly("org.projectlombok:lombok")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.postgresql:postgresql")
+    annotationProcessor("org.projectlombok:lombok")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+
+
+tasks.withType(org.gradle.api.tasks.Copy) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+
+
+
+jar {
+    enabled = true
+    manifest {
+        attributes(
+            'Main-Class': 'com.saswat.kyc.SaswatKYCServiceApplication'
+        )
+    }
+}
+
+bootJar {
+    archiveFileName = "${project.name}-${version}.jar"
+    mainClass.set('com.saswat.kyc.SaswatKYCServiceApplication')
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.release = 17
+}
+
+task createFolder {
+    doLast {
+        def keystoreDir = file("${buildDir}/libs/keystore")
+        def configDir = file("${buildDir}/libs/config")
+        def libDir = file("${buildDir}/libs/lib")
+        def logDir = file("${buildDir}/libs/logs")
+
+        logDir.mkdirs()
+        delete libDir, configDir, keystoreDir
+        libDir.mkdirs()
+        configDir.mkdirs()
+        keystoreDir.mkdirs()
+    }
+}
+
+task copyLib(type: Copy) {
+    dependsOn createFolder
+    into "${buildDir}/libs/lib"
+    from configurations.runtimeClasspath
+}
+
+task copyKeystore(type: Copy) {
+    dependsOn createFolder
+    into "${buildDir}/libs/keystore"
+    from "keystore"
+}
+
+task copyConfig(type: Copy) {
+    dependsOn createFolder
+    into "${buildDir}/libs/config"
+    from "config"
+}
+
+task bundleAll(type: Jar) {
+    dependsOn copyLib, copyConfig, copyKeystore
+
+    manifest {
+        attributes(
+            'Implementation-Title': 'SaswatKYCServiceApplication',
+            'Implementation-Version': version,
+            'Main-Class': 'com.saswat.kyc.SaswatKYCServiceApplication'
+        )
+        attributes 'Class-Path': configurations.runtimeClasspath.files.collect { "lib/${it.name}" }.join(' ')
+    }
+
+    archiveFileName = "${project.name}-${version}.jar"
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    with jar
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}
+
+task zip(type: Zip) {
+    dependsOn bundleAll
+    from 'build/libs'
+    archiveFileName = "${project.name}-${version}.zip"
+}
