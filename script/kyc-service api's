@@ -1,0 +1,3247 @@
+1.pan fetch v3 : https://98.70.77.51:8083/kyc/saswat/pan/fetch
+
+
+Request body :
+
+{
+    "number": "BKNPH6867A",
+    "returnIndividualTaxComplianceInfo": "true"
+}
+
+
+Response body:
+
+{
+   "result":{
+      "name":"VEREESH HEREEMATA",
+      "number":"BKNPH6867A",
+      "typeOfHolder":"Individual or Person",
+      "isIndividual":true,
+      "isValid":true,
+      "firstName":"VEREESH",
+      "middleName":"",
+      "lastName":"HEREEMATA",
+      "title":"",
+      "panStatus":"VALID",
+      "panStatusCode":"E",
+      "aadhaarSeedingStatus":"Successful",
+      "aadhaarSeedingStatusCode":"Y",
+      "lastUpdatedOn":"",
+      "individualTaxComplianceStatus":"operative"
+   }
+}
+
+
+2.IndividualPan verification : https://98.70.77.51:8083/kyc/saswat/panverification
+
+Requestbody:
+
+{
+  "name": "Vereesh Hereemata",
+  "fuzzy": "true",
+  "number": "BKNPH6867A",
+  "panStatus": "true"
+}
+
+Responsebody:
+
+{
+    "result": {
+        "verified": true,
+        "message": "Verification completed with positive result",
+        "upstreamName": "RAUNAK SINGH",
+        "panStatus": "VALID",
+        "panStatusCode": "E"
+    }
+}
+
+
+3. Dlverification : https://98.70.77.51:8083/kyc/saswat/api/DL/Verification
+
+Request body:
+
+{
+  "dob": "08/07/1986",
+  "number": "WB7319930351275",
+  "issueDate": "25/10/2021"
+}
+
+Responsebody:
+{
+    "result": {
+        "verified": true,
+        "message": "Driving licence verification process completed successfully with positive result.",
+        "moreInfo": {
+            "issueDate": "Oct 25, 2021",
+            "expiryDate": "Oct 22, 2041",
+            "vehicleClass": [
+                "MCWG",
+                "LMV"
+            ]
+        }
+    }
+}
+
+
+4.DL numberbased: https://98.70.77.51:8083/kyc/saswat/api/DL/numberbased
+
+
+Requestbody :
+
+{
+    "number": "WB7319930351275",
+    "dob": "08/07/1986"
+}
+
+Responsebody :
+ {
+    "result": {
+        "dlNumber": "your_license_number",
+        "dob": "your_date_of_birth",
+        "badgeDetails": [
+            {
+                "badgeIssueDate": "",
+                "badgeNo": "",
+                "classOfVehicle": [
+                    "MCWOG ",
+                    "LMV   ",
+                    "LMVCAB"
+                ]
+            }
+        ],
+        "dlValidity": {
+            "nonTransport": {
+                "to": "29/06/2027",
+                "from": "22/12/2016"
+            },
+            "hazardousValidTill": "",
+            "transport": {
+                "to": "28/11/2024",
+                "from": "29/11/2019"
+            },
+            "hillValidTill": ""
+        },
+        "detailsOfDrivingLicence": {
+            "dateOfIssue": "22/12/1993",
+            "dateOfLastTransaction": "",
+            "status": "",
+            "lastTransactedAt": "",
+            "name": "your_name",
+            "fatherOrHusbandName": "your_father_name",
+            "addressList": [
+                {
+                    "completeAddress": "MATIGARA DARJEELING MATIGARA,DARJEELING 734010",
+                    "type": "permanent",
+                    "splitAddress": {
+                        "district": [
+                            "DARJILING"
+                        ],
+                        "state": [
+                            [
+                                "WEST BENGAL",
+                                "WB"
+                            ]
+                        ],
+                        "city": [
+                            "MATIGARA"
+                        ],
+                        "pincode": "734010",
+                        "country": [
+                            "IN",
+                            "IND",
+                            "INDIA"
+                        ],
+                        "addressLine": "DARJEELING,DARJEELING"
+                    }
+                }
+            ],
+            "address": "MATIGARA DARJEELING MATIGARA,DARJEELING 734010",
+            "photo": "https://your_photo.png",
+            "splitAddress": {
+                "district": [
+                    "DARJILING"
+                ],
+                "state": [
+                    [
+                        "WEST BENGAL",
+                        "WB"
+                    ]
+                ],
+                "city": [
+                    "MATIGARA"
+                ],
+                "pincode": "734010",
+                "country": [
+                    "IN",
+                    "IND",
+                    "INDIA"
+                ],
+                "addressLine": "DARJEELING,DARJEELING"
+            },
+            "covDetails": []
+        }
+    }
+}
+
+
+5.passportverify : https://98.70.77.51:8083/kyc/saswat/api/passport/verify
+
+Requestbody:
+ {
+  "dob": "31/01/1998",
+  "name": "RATHI RAVI",
+  "fileNumber": "BO1079341954215"
+}
+
+Responsebody :
+  {
+    "result": {
+        "verified": "true",
+        "message": "Verification completed with positive results",
+        "upstreamName": "APURBA KUIRY"
+    }
+}
+
+
+6.passport fetch : https://98.70.77.51:8083/kyc/saswat/api/passport/fetch
+
+Requestbody :
+ {
+  "dob": "31/01/1998",
+  "fileNumber": "BO1079341954215"
+}
+
+Response body :
+{
+    "result": {
+        "fileNumber": "XXXXXXXXX",
+        "givenName": "PRANAV RAMDAS",
+        "surname": "BHAGAT",
+        "typeOfApplication": "NORMAL",
+        "applicationReceivedOnDate": "10/02/2020",
+        "name": "PRANAV RAMDAS BHAGAT",
+        "dob": "30/07/1999"
+    }
+}
+
+
+7.voterdetailedsearch : https://98.70.77.51:8083/kyc/saswat/api/voterid/detailedsearch
+
+Requestbody :
+{
+  "epicNumber": "YFO4805719",
+  "getAdditionalData": "true"
+}
+
+
+Responsebody :
+ {
+    "result": {
+        "name": "SUSHMITHA H",
+        "nameInRegionalLang": "ಸುಶ್ಮಿತ ಹೆಚ್",
+        "age": "25",
+        "relationType": "FTHR",
+        "relationName": "SUNILAKUMAR",
+        "relationNameInRegionalLang": "ಸುನಿಲಕುಮಾರ",
+        "fatherName": "SUNILAKUMAR",
+        "dob": "",
+        "gender": "Female",
+        "address": "GOVT JUNIOR COLLEGE SIRWAR",
+        "splitAddress": {
+            "district": [
+                "RAICHUR"
+            ],
+            "state": [
+                [
+                    "Karnataka"
+                ]
+            ],
+            "city": [
+                "Manvi"
+            ],
+            "pincode": "",
+            "country": [
+                "IN",
+                "IND",
+                "INDIA"
+            ],
+            "addressLine": "GOVT JUNIOR COLLEGE SIRWAR"
+        },
+        "epicNumber": "ABV3863479",
+        "state": "Karnataka",
+        "assemblyConstituencyNo": "55",
+        "assemblyConstituency": "MANVI",
+        "parliamentaryConstituencyNo": "6",
+        "parliamentaryConstituency": "Raichur",
+        "partNo": "29",
+        "partName": "GOVERMENT JUNIOR COLLEGE 2nd Room (South Wing ) sirwar",
+        "serialNo": "892",
+        "pollingStation": "GOVT JUNIOR COLLEGE SIRWAR",
+        "photo": ""
+    }
+}
+
+// When getAdditionalData is passed as "false"
+{
+    "result": {
+        "name": "PRAMEELA C R",
+        "fatherName": "RAMANADHAN A P",
+        "dob": "",
+        "gender": "Female",
+        "address": "Holy Family C G H S Chembookavu",
+        "splitAddress": {
+            "district": [
+                "THRISSUR"
+            ],
+            "state": [
+                [
+                    "Kerala"
+                ]
+            ],
+            "city": [
+                "THRISSUR"
+            ],
+            "pincode": "",
+            "country": [
+                "IN",
+                "IND",
+                "INDIA"
+            ],
+            "addressLine": "Holy Family C G H S Chembookavu"
+        },
+        "epicNumber": "XXX0000000",
+        "state": "Kerala",
+        "assemblyConstituency": "THRISSUR",
+        "photo": ""
+    }
+}
+
+
+8.voter fetch : https://98.70.77.51:8083/kyc/saswat/api/voterid/fetch
+
+Requestbody :
+ {
+  "name": "VEERESH HEREEMATA",
+  "epicNumber": "YFO4805719"
+}
+
+
+Response body:
+
+{
+    "result": {
+        "name": "John Doe",
+        "dob": "",
+        "district": "Panji",
+        "state": "Gao",
+        "fatherName": "Adam Doe",
+        "gender": "Male"
+    }
+}
+
+
+9.  voterverification : https://98.70.77.51:8083/kyc/saswat/api/voter-id/verification
+
+Requestbody :
+
+{
+  "name": "Vereesh Hereemata",
+  "state": "Karnataka",
+  "epicNumber": "YFO4805719"
+}
+
+Responsebody :
+ {
+    "result": {
+        "verification": true,
+        "message": "Verification completed with positive result"
+    }
+}
+
+10.Aaadhar_Url :https://98.70.77.51:8083/kyc/saswat/aadhar_verification
+
+Requestbody :
+ {
+    "uid":"201681246757"
+}
+
+Responsebody :
+ {
+    "result": {
+        "verified": true,
+        "aadhaarNumber": "<Aadhaar number>"
+    }
+}
+
+11. Panextractionfileurl : https://98.70.77.51:8083/kyc/saswat/file/upload
+
+Requestbody: 
+
+file: 
+
+ttl:
+
+Responsebody :
+
+{
+   "file":{
+      "id":"41726412",
+      "filetype":"image/jpeg",
+      "size":"144903",
+      "directURL":"https://preproduction-persist.signzy.tech/api/files/41726412/download/906efe86f0f449fa98012b67aacbaa10e8bec312edff4471a8ca12b2f2fac19d.jpeg",
+      "Protected":false
+   }
+}
+
+12. Panextractionurl : https://98.70.77.51:8083/kyc/saswat/pan/extraction
+
+Requestbody :
+
+{
+   "files":[
+      "https://preproduction-persist.signzy.tech/api/files/41480121/download/5f0d2d7f044143199332b9d570e862872ee4912d55874d59935e1912f1856cc3.jpeg"
+   ],
+   "type":"individualPan",
+   "getRelativeData":true
+}
+
+
+Responsebody :
+
+{
+   "files":[
+      "https://preproduction-persist.signzy.tech/api/files/41480121/download/5f0d2d7f044143199332b9d570e862872ee4912d55874d59935e1912f1856cc3.jpeg"
+   ],
+   "type":"individualPan",
+   "getRelativeData":true,
+   "id":6,
+   "result":{
+      "dob":"07/11/2001",
+      "name":"VEREESH HEREEMATA",
+      "fatherName":"VIRUPAKSHAYYA SWAMY HEREEMATA",
+      "number":"BKNPH6867A",
+      "panType":"Adult",
+      "summary":{
+         "number":"BKNPH6867A",
+         "name":"VEREESH HEREEMATA",
+         "dob":"07/11/2001",
+         "address":"",
+         "splitAddress":{
+            "district":[
+               
+            ],
+            "state":[
+               [
+                  
+               ]
+            ],
+            "city":[
+               
+            ],
+            "pincode":"",
+            "country":[
+               
+            ],
+            "addressLine":""
+         },
+         "gender":"",
+         "guardianName":"VIRUPAKSHAYYA SWAMY HEREEMATA",
+         "issueDate":"",
+         "expiryDate":""
+      },
+      "relativeDetails":{
+         "name":"VIRUPAKSHAYYA SWAMY HEREEMATA",
+         "relation":"father"
+      }
+   }
+}
+
+13.experian bureau : https://98.70.77.51:8083/kyc/saswat/experian-report
+
+Request body:
+{
+    "firstName": "VEREESH",
+    "lastName": "HEREEMATA",
+    "dateOfBirth": "2001-11-07",
+    "phoneNumber": 9880418761,
+    "pan": "BKNPH6867A",
+    "pincode": 584140
+}
+
+Response body:
+{
+  "statusCode": 200,
+  "message": "SUCCESS",
+  "data": {
+      "jsonExperianReport": {
+          "Header": {
+              "SystemCode": 0,
+              "MessageText": "",
+              "ReportDate": 20240404,
+              "ReportTime": 122247
+          },
+          "UserMessage": {
+              "UserMessageText": "Normal Response"
+          },
+          "CreditProfileHeader": {
+              "ReportDate": 20240404,
+              "ReportTime": 122247,
+              "Version": "V2.4",
+              "ReportNumber": 1712213567495
+          },
+          "Current_Application": {
+              "Current_Application_Details": {
+                  "Enquiry_Reason": 99,
+                  "Finance_Purpose": 99,
+                  "Amount_Financed": 0,
+                  "Duration_Of_Agreement": 0,
+                  "Current_Applicant_Details": {
+                      "Last_Name": "Doe",
+                      "First_Name": "John",
+                      "Middle_Name1": "",
+                      "Middle_Name2": "",
+                      "Middle_Name3": "",
+                      "Gender_Code": 2,
+                      "IncomeTaxPan": "ABCDE4289A",
+                      "Date_Of_Birth_Applicant": 19870811,
+                      "Telephone_Number_Applicant_1st": "",
+                      "Telephone_Extension": "",
+                      "Telephone_Type": "",
+                      "MobilePhoneNumber": 9295390874,
+                      "EMailId": "",
+                      "genderCodeDescription": "Male"
+                  },
+                  "Current_Other_Details": {
+                      "Income": 0,
+                      "Marital_Status": "",
+                      "Employment_Status": "",
+                      "Time_with_Employer": "",
+                      "Number_of_Major_Credit_Card_Held": ""
+                  },
+                  "Current_Applicant_Address_Details": {
+                      "FlatNoPlotNoHouseNo": "CHINAR4 CHS",
+                      "BldgNoSocietyName": "",
+                      "RoadNoNameAreaLocality": "",
+                      "City": "Mumbai",
+                      "Landmark": "",
+                      "State": 27,
+                      "PINCode": 400004,
+                      "Country_Code": "IB",
+                      "stateDescription": "MAHARASHTRA"
+                  },
+                  "Current_Applicant_Additional_AddressDetails": "",
+                  "enquiryReasonDescription": "Others",
+                  "financePurposeDescription": "Others"
+              }
+          },
+          "CAIS_Account": {
+              "CAIS_Summary": {
+                  "Credit_Account": {
+                      "CreditAccountTotal": 3,
+                      "CreditAccountActive": 3,
+                      "CreditAccountDefault": 0,
+                      "CreditAccountClosed": 0,
+                      "CADSuitFiledCurrentBalance": 0
+                  },
+                  "Total_Outstanding_Balance": {
+                      "Outstanding_Balance_Secured": 2000000,
+                      "Outstanding_Balance_Secured_Percentage": 33,
+                      "Outstanding_Balance_UnSecured": 4000000,
+                      "Outstanding_Balance_UnSecured_Percentage": 67,
+                      "Outstanding_Balance_All": 6000000
+                  }
+              },
+              "CAIS_Account_DETAILS": [
+                  {
+                      "Identification_Number": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Account_Number": "XXXXXX0S04",
+                      "Portfolio_Type": "I",
+                      "Account_Type": 1,
+                      "Open_Date": 20220615,
+                      "Credit_Limit_Amount": "",
+                      "Highest_Credit_or_Original_Loan_Amount": 2000000,
+                      "Terms_Duration": "",
+                      "Terms_Frequency": "",
+                      "Scheduled_Monthly_Payment_Amount": "",
+                      "Account_Status": 11,
+                      "Payment_Rating": "?",
+                      "Payment_History_Profile": "????????????????????????????????????",
+                      "Special_Comment": "",
+                      "Current_Balance": 1000000,
+                      "Amount_Past_Due": "",
+                      "Original_Charge_Off_Amount": "",
+                      "Date_Reported": 20230510,
+                      "Date_of_First_Delinquency": "",
+                      "Date_Closed": "",
+                      "Date_of_Last_Payment": "",
+                      "SuitFiledWillfulDefaultWrittenOffStatus": "",
+                      "SuitFiled_WillfulDefault": "",
+                      "Written_off_Settled_Status": "",
+                      "Value_of_Credits_Last_Month": "",
+                      "Occupation_Code": "",
+                      "Settlement_Amount": "",
+                      "Value_of_Collateral": "",
+                      "Type_of_Collateral": "",
+                      "Written_Off_Amt_Total": "",
+                      "Written_Off_Amt_Principal": "",
+                      "Rate_of_Interest": "",
+                      "Repayment_Tenure": 0,
+                      "Promotional_Rate_Flag": "",
+                      "Income": "",
+                      "Income_Indicator": "",
+                      "Income_Frequency_Indicator": "",
+                      "DefaultStatusDate": "",
+                      "LitigationStatusDate": "",
+                      "WriteOffStatusDate": "",
+                      "DateOfAddition": 20230410,
+                      "CurrencyCode": "INR",
+                      "Subscriber_comments": "",
+                      "Consumer_comments": "",
+                      "AccountHoldertypeCode": 1,
+                      "CAIS_Account_History": [
+                          {
+                              "Year": 2023,
+                              "Month": 5,
+                              "Days_Past_Due": "",
+                              "Asset_Classification": "?"
+                          },
+                          {
+                              "Year": 2023,
+                              "Month": 4,
+                              "Days_Past_Due": "",
+                              "Asset_Classification": "?"
+                          }
+                      ],
+                      "CAIS_Holder_Details": [
+                          {
+                              "Surname_Non_Normalized": "Doe",
+                              "First_Name_Non_Normalized": "John",
+                              "Middle_Name_1_Non_Normalized": "",
+                              "Middle_Name_2_Non_Normalized": "",
+                              "Middle_Name_3_Non_Normalized": "",
+                              "Alias": "",
+                              "Gender_Code": 2,
+                              "Income_TAX_PAN": "ABCDE4289A",
+                              "Date_of_birth": 19870811,
+                              "genderCodeDescription": "Male"
+                          }
+                      ],
+                      "CAIS_Holder_Address_Details": [
+                          {
+                              "First_Line_Of_Address_non_normalized": "CHINAR4 CHS",
+                              "Second_Line_Of_Address_non_normalized": "SV RAOD 4",
+                              "Third_Line_Of_Address_non_normalized": "",
+                              "City_non_normalized": "",
+                              "Fifth_Line_Of_Address_non_normalized": "",
+                              "State_non_normalized": 27,
+                              "ZIP_Postal_Code_non_normalized": 400004,
+                              "CountryCode_non_normalized": "IB",
+                              "Address_indicator_non_normalized": "",
+                              "Residence_code_non_normalized": ""
+                          }
+                      ],
+                      "CAIS_Holder_Phone_Details": [
+                          {
+                              "Telephone_Number": 9295390874,
+                              "Telephone_Type": "",
+                              "Telephone_Extension": "",
+                              "Mobile_Telephone_Number": "",
+                              "FaxNumber": "",
+                              "EMailId": ""
+                          }
+                      ],
+                      "CAIS_Holder_ID_Details": [
+                          {
+                              "Income_TAX_PAN": "ABCDE4289A",
+                              "EMailId": ""
+                          }
+                      ],
+                      "portfolioTypeDescription": "Instalment Loans",
+                      "accountTypeDescription": "AUTO LOAN",
+                      "accountStatusDescription": "ACTIVE",
+                      "accountholdertypecodeDescription": "Individual"
+                  },
+                  {
+                      "Identification_Number": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Account_Number": "XXXXXX0S62",
+                      "Portfolio_Type": "M",
+                      "Account_Type": 2,
+                      "Open_Date": 20220615,
+                      "Credit_Limit_Amount": "",
+                      "Highest_Credit_or_Original_Loan_Amount": 1500000,
+                      "Terms_Duration": "",
+                      "Terms_Frequency": "",
+                      "Scheduled_Monthly_Payment_Amount": "",
+                      "Account_Status": 93,
+                      "Payment_Rating": 2,
+                      "Payment_History_Profile": "N",
+                      "Special_Comment": "",
+                      "Current_Balance": 1000000,
+                      "Amount_Past_Due": 4500000,
+                      "Original_Charge_Off_Amount": "",
+                      "Date_Reported": 20230210,
+                      "Date_of_First_Delinquency": "",
+                      "Date_Closed": "",
+                      "Date_of_Last_Payment": "",
+                      "SuitFiledWillfulDefaultWrittenOffStatus": "",
+                      "SuitFiled_WillfulDefault": 1,
+                      "Written_off_Settled_Status": "",
+                      "Value_of_Credits_Last_Month": "",
+                      "Occupation_Code": "",
+                      "Settlement_Amount": "",
+                      "Value_of_Collateral": "",
+                      "Type_of_Collateral": "",
+                      "Written_Off_Amt_Total": "",
+                      "Written_Off_Amt_Principal": "",
+                      "Rate_of_Interest": "",
+                      "Repayment_Tenure": 0,
+                      "Promotional_Rate_Flag": "",
+                      "Income": "",
+                      "Income_Indicator": "",
+                      "Income_Frequency_Indicator": "",
+                      "DefaultStatusDate": "",
+                      "LitigationStatusDate": "",
+                      "WriteOffStatusDate": "",
+                      "DateOfAddition": 20230210,
+                      "CurrencyCode": "INR",
+                      "Subscriber_comments": "",
+                      "Consumer_comments": "",
+                      "AccountHoldertypeCode": 1,
+                      "CAIS_Account_History": [
+                          {
+                              "Year": 2023,
+                              "Month": 2,
+                              "Days_Past_Due": 67,
+                              "Asset_Classification": "S",
+                              "assetClassificationDescription": "Asset Classification is Standard"
+                          }
+                      ],
+                      "CAIS_Holder_Details": [
+                          {
+                              "Surname_Non_Normalized": "Doe",
+                              "First_Name_Non_Normalized": "John",
+                              "Middle_Name_1_Non_Normalized": "",
+                              "Middle_Name_2_Non_Normalized": "",
+                              "Middle_Name_3_Non_Normalized": "",
+                              "Alias": "",
+                              "Gender_Code": 2,
+                              "Income_TAX_PAN": "ABCDE4289A",
+                              "Date_of_birth": 19870811,
+                              "genderCodeDescription": "Male"
+                          }
+                      ],
+                      "CAIS_Holder_Address_Details": [
+                          {
+                              "First_Line_Of_Address_non_normalized": "CHINAR4 CHS",
+                              "Second_Line_Of_Address_non_normalized": "SV RAOD 4",
+                              "Third_Line_Of_Address_non_normalized": "",
+                              "City_non_normalized": "",
+                              "Fifth_Line_Of_Address_non_normalized": "",
+                              "State_non_normalized": 27,
+                              "ZIP_Postal_Code_non_normalized": 400003,
+                              "CountryCode_non_normalized": "IB",
+                              "Address_indicator_non_normalized": "",
+                              "Residence_code_non_normalized": ""
+                          }
+                      ],
+                      "CAIS_Holder_Phone_Details": [
+                          {
+                              "Telephone_Number": 9295390874,
+                              "Telephone_Type": "",
+                              "Telephone_Extension": "",
+                              "Mobile_Telephone_Number": "",
+                              "FaxNumber": "",
+                              "EMailId": ""
+                          }
+                      ],
+                      "CAIS_Holder_ID_Details": [
+                          {
+                              "Income_TAX_PAN": "ABCDE4289A",
+                              "EMailId": ""
+                          }
+                      ],
+                      "portfolioTypeDescription": "Mortgage Loan",
+                      "accountTypeDescription": "HOUSING LOAN",
+                      "accountStatusDescription": "Suit Filed(Wilful default)",
+                      "paymentHistoryProfileDescription": "Value not available",
+                      "suitfiledWillfuldefaultDescription": "Suit Filed",
+                      "accountholdertypecodeDescription": "Individual"
+                  },
+                  {
+                      "Identification_Number": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Account_Number": "XXXXXXXXDP02",
+                      "Portfolio_Type": "I",
+                      "Account_Type": 5,
+                      "Open_Date": 20220615,
+                      "Credit_Limit_Amount": "",
+                      "Highest_Credit_or_Original_Loan_Amount": 5600000,
+                      "Terms_Duration": "",
+                      "Terms_Frequency": "",
+                      "Scheduled_Monthly_Payment_Amount": "",
+                      "Account_Status": 89,
+                      "Payment_Rating": 4,
+                      "Payment_History_Profile": "4?44????????????????????????????????",
+                      "Special_Comment": "",
+                      "Current_Balance": 4000000,
+                      "Amount_Past_Due": 1000000,
+                      "Original_Charge_Off_Amount": "",
+                      "Date_Reported": 20230520,
+                      "Date_of_First_Delinquency": "",
+                      "Date_Closed": "",
+                      "Date_of_Last_Payment": "",
+                      "SuitFiledWillfulDefaultWrittenOffStatus": "",
+                      "SuitFiled_WillfulDefault": 2,
+                      "Written_off_Settled_Status": "",
+                      "Value_of_Credits_Last_Month": "",
+                      "Occupation_Code": "",
+                      "Settlement_Amount": "",
+                      "Value_of_Collateral": "",
+                      "Type_of_Collateral": "",
+                      "Written_Off_Amt_Total": "",
+                      "Written_Off_Amt_Principal": "",
+                      "Rate_of_Interest": "",
+                      "Repayment_Tenure": 0,
+                      "Promotional_Rate_Flag": "",
+                      "Income": "",
+                      "Income_Indicator": "",
+                      "Income_Frequency_Indicator": "",
+                      "DefaultStatusDate": "",
+                      "LitigationStatusDate": "",
+                      "WriteOffStatusDate": "",
+                      "DateOfAddition": 20230120,
+                      "CurrencyCode": "INR",
+                      "Subscriber_comments": "",
+                      "Consumer_comments": "",
+                      "AccountHoldertypeCode": 1,
+                      "CAIS_Account_History": [
+                          {
+                              "Year": 2023,
+                              "Month": 5,
+                              "Days_Past_Due": 120,
+                              "Asset_Classification": "?"
+                          },
+                          {
+                              "Year": 2023,
+                              "Month": 4,
+                              "Days_Past_Due": 120,
+                              "Asset_Classification": "?"
+                          },
+                          {
+                              "Year": 2023,
+                              "Month": 2,
+                              "Days_Past_Due": 120,
+                              "Asset_Classification": "?"
+                          },
+                          {
+                              "Year": 2023,
+                              "Month": 1,
+                              "Days_Past_Due": 120,
+                              "Asset_Classification": "?"
+                          }
+                      ],
+                      "CAIS_Holder_Details": [
+                          {
+                              "Surname_Non_Normalized": "Doe",
+                              "First_Name_Non_Normalized": "John",
+                              "Middle_Name_1_Non_Normalized": "",
+                              "Middle_Name_2_Non_Normalized": "",
+                              "Middle_Name_3_Non_Normalized": "",
+                              "Alias": "",
+                              "Gender_Code": 2,
+                              "Income_TAX_PAN": "ABCDE4289A",
+                              "Date_of_birth": 19870811,
+                              "genderCodeDescription": "Female"
+                          }
+                      ],
+                      "CAIS_Holder_Address_Details": [
+                          {
+                              "First_Line_Of_Address_non_normalized": "CHINAR4 CHS",
+                              "Second_Line_Of_Address_non_normalized": "SV RAOD 4",
+                              "Third_Line_Of_Address_non_normalized": "",
+                              "City_non_normalized": "",
+                              "Fifth_Line_Of_Address_non_normalized": "",
+                              "State_non_normalized": 27,
+                              "ZIP_Postal_Code_non_normalized": 400003,
+                              "CountryCode_non_normalized": "IB",
+                              "Address_indicator_non_normalized": "",
+                              "Residence_code_non_normalized": ""
+                          }
+                      ],
+                      "CAIS_Holder_Phone_Details": [
+                          {
+                              "Telephone_Number": 9295390874,
+                              "Telephone_Type": "",
+                              "Telephone_Extension": "",
+                              "Mobile_Telephone_Number": "",
+                              "FaxNumber": "",
+                              "EMailId": ""
+                          }
+                      ],
+                      "CAIS_Holder_ID_Details": [
+                          {
+                              "Income_TAX_PAN": "ABCDE4289A",
+                              "EMailId": ""
+                          }
+                      ],
+                      "portfolioTypeDescription": "Instalment Loans",
+                      "accountTypeDescription": "PERSONAL LOAN",
+                      "accountStatusDescription": "Wilful default",
+                      "suitfiledWillfuldefaultDescription": "Wilful Default",
+                      "accountholdertypecodeDescription": "Individual"
+                  }
+              ]
+          },
+          "Match_result": {
+              "Exact_match": "Y"
+          },
+          "TotalCAPS_Summary": {
+              "TotalCAPSLast7Days": 100,
+              "TotalCAPSLast30Days": 102,
+              "TotalCAPSLast90Days": 141,
+              "TotalCAPSLast180Days": 171
+          },
+          "CAPS": {
+              "CAPS_Summary": {
+                  "CAPSLast7Days": 0,
+                  "CAPSLast30Days": 2,
+                  "CAPSLast90Days": 41,
+                  "CAPSLast180Days": 71
+              },
+              "CAPS_Application_Details": [
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240320,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1710930859687,
+                      "Enquiry_Reason": 3,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 120000000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Business Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240306,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1709724318867,
+                      "Enquiry_Reason": 5,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Construction Equipment loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240214,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707909096676,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240214,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707899837575,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": "",
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240214,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707895117545,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": "",
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240214,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707893632499,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": "",
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240214,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707893061777,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": "",
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240213,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707823924794,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240213,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707817723260,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240212,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707739175318,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240212,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707738271430,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240212,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707738254090,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240212,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707738190970,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240212,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707729519660,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": "",
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240212,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707721881178,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 23,
+                      "Amount_Financed": 100000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Credit Card"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240212,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707721420006,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240212,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707702842515,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240210,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707550275576,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240210,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707550256820,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240210,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707550213416,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240210,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707550179191,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240210,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707550165289,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240210,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707550152097,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707473362666,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707473333231,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707473274373,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707473260140,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707472620137,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707468914317,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707468882192,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707468851803,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240209,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707468631432,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240208,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707392917529,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240208,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707392802891,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240208,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1707392452346,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 1000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240120,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1705736992955,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240120,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1705692399966,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231229,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1703832008363,
+                      "Enquiry_Reason": 14,
+                      "Finance_Purpose": 48,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 180,
+                      "enquiryReasonDescription": "Property Loan",
+                      "financePurposeDescription": "New Home"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231221,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1703151431746,
+                      "Enquiry_Reason": 1,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 300000,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Agriculture Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231211,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1702294471161,
+                      "Enquiry_Reason": 16,
+                      "Finance_Purpose": 55,
+                      "Amount_Financed": 105000,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Two/Three Wheeler Loan",
+                      "financePurposeDescription": "Two Wheeler"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231211,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1702273161695,
+                      "Enquiry_Reason": 16,
+                      "Finance_Purpose": 55,
+                      "Amount_Financed": 70000,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Two/Three Wheeler Loan",
+                      "financePurposeDescription": "Two Wheeler"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231205,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1701780182131,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 23,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Credit Card"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231127,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1701064456831,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 23,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Credit Card"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231127,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1701063389615,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 23,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Credit Card"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231110,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699556681509,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231109,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699506257521,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231108,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699421716179,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 23,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Credit Card"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231107,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699342537042,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 23,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Credit Card"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231107,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699339651538,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 23,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Credit Card"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699008215975,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699006853094,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699006792415,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699006784824,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699006594331,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699006152118,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699006130038,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699005908811,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699005789493,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699005405690,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699004989501,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699004857663,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231103,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1699004635515,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231102,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1698917727853,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 5000,
+                      "Duration_Of_Agreement": 6,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231031,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1698735721323,
+                      "Enquiry_Reason": 3,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 7000000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Business Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231031,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1698735687865,
+                      "Enquiry_Reason": 3,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 7000000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Business Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231027,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1698411606124,
+                      "Enquiry_Reason": 7,
+                      "Finance_Purpose": 23,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Credit Card",
+                      "financePurposeDescription": "Credit Card"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20231027,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1698409763677,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 10000,
+                      "Duration_Of_Agreement": 12,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230915,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1694776424244,
+                      "Enquiry_Reason": 3,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 2000000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Business Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230915,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1694776411674,
+                      "Enquiry_Reason": 3,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 2000000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Business Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230915,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1694776344969,
+                      "Enquiry_Reason": 3,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 2000000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Business Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230731,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1690788780972,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 700000,
+                      "Duration_Of_Agreement": 30,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230725,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1690269381535,
+                      "Enquiry_Reason": 13,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 700000,
+                      "Duration_Of_Agreement": 30,
+                      "enquiryReasonDescription": "Personal Loan",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230705,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1688540002274,
+                      "Enquiry_Reason": 1,
+                      "Finance_Purpose": 1,
+                      "Amount_Financed": 30000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Agriculture Loan",
+                      "financePurposeDescription": "Agricultural Machinery"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230705,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1688539973707,
+                      "Enquiry_Reason": 1,
+                      "Finance_Purpose": 1,
+                      "Amount_Financed": 30000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Agriculture Loan",
+                      "financePurposeDescription": "Agricultural Machinery"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230705,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1688539856178,
+                      "Enquiry_Reason": 1,
+                      "Finance_Purpose": 1,
+                      "Amount_Financed": 30000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Agriculture Loan",
+                      "financePurposeDescription": "Agricultural Machinery"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230705,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1688539843171,
+                      "Enquiry_Reason": 1,
+                      "Finance_Purpose": 1,
+                      "Amount_Financed": 30000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Agriculture Loan",
+                      "financePurposeDescription": "Agricultural Machinery"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230705,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1688539746498,
+                      "Enquiry_Reason": 1,
+                      "Finance_Purpose": 1,
+                      "Amount_Financed": 30000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Agriculture Loan",
+                      "financePurposeDescription": "Agricultural Machinery"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20230705,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1688538525452,
+                      "Enquiry_Reason": 1,
+                      "Finance_Purpose": 1,
+                      "Amount_Financed": 30000,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Agriculture Loan",
+                      "financePurposeDescription": "Agricultural Machinery"
+                  }
+              ]
+          },
+          "NonCreditCAPS": {
+              "NonCreditCAPS_Summary": {
+                  "NonCreditCAPSLast7Days": 100,
+                  "NonCreditCAPSLast30Days": 100,
+                  "NonCreditCAPSLast90Days": 100,
+                  "NonCreditCAPSLast180Days": 100
+              },
+              "CAPS_Application_Details": [
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213566766,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213557342,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213556582,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213475630,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213474917,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213330093,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213329282,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213031042,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712213031966,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712212988364,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712212987641,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712212980184,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712212979390,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712211618236,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240404,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712211617077,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712164577825,
+                      "Enquiry_Reason": 1,
+                      "Finance_Purpose": 1,
+                      "Amount_Financed": 7001,
+                      "Duration_Of_Agreement": 1,
+                      "enquiryReasonDescription": "Agriculture Loan",
+                      "financePurposeDescription": "Agricultural Machinery"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712149091200,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712149089872,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712148898096,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712148898847,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712148622246,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712148622996,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712148484029,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712148482256,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712140886131,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712140886838,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712140860078,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712140860805,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712140780007,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712140780750,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712140721398,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712140720640,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712138603139,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712138603904,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712133208934,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712133204212,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712132909415,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712132908687,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712132511964,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712132510633,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712130517224,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712130516072,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712129856012,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712129856797,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712129266089,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712129266812,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712128634243,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712128634910,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712128611184,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712128611904,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712125214796,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712125213043,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712121948833,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712121947626,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712120249270,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712120248550,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712119074669,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712119073979,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118950236,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118949463,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118936772,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118935484,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118870103,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118870912,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118849114,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118848360,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118746951,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712118745527,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712117842688,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240403,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712117841444,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712058256291,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712058254563,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712057040533,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712057039748,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712053595994,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712053594787,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712041964197,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712041954718,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712034180576,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712034179723,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712032482640,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712032481893,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712032248598,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712032247853,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712031321381,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712031320611,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712031272390,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712031271102,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712030664331,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240402,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1712030662237,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711975693686,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711975692312,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711968405446,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711968404295,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711965201131,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711965200273,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711961611659,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711961609853,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711957929236,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  },
+                  {
+                      "Subscriber_code": "OTHXXXXXXXX",
+                      "Subscriber_Name": "XXXXXXXXXX",
+                      "Date_of_Request": 20240401,
+                      "ReportTime": 122247,
+                      "ReportNumber": 1711957928519,
+                      "Enquiry_Reason": 99,
+                      "Finance_Purpose": 99,
+                      "Amount_Financed": 0,
+                      "Duration_Of_Agreement": 0,
+                      "enquiryReasonDescription": "Others",
+                      "financePurposeDescription": "Others"
+                  }
+              ]
+          },
+          "SCORE": {
+              "FCIREXScore": 611,
+              "FCIREXScoreConfidLevel": ""
+          }
+      },
+      "excelExperianReport": "https://preproduction-persist.signzy.tech/api/files/5071259/download/6496db4da5dc423a98e656a39d00e29a97e6c6b8bd224fb9ae1e0e819fb0d0e3.xlsx"
+  }
+}
