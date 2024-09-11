@@ -46,6 +46,18 @@ public class PropertiesConfig {
 
 	@Value("${Aaadhar_Url}")
 	private String Aaadhar_Url;
+	
+	
+	@Value("${Experianbureau.url}")
+	private String Experianbureauurl;
+
+	public String getExperianbureauurl() {
+		return Experianbureauurl;
+	}
+
+	public void setExperianbureauurl(String experianbureauurl) {
+		Experianbureauurl = experianbureauurl;
+	}
 
 	public String getAaadhar_Url() {
 		return Aaadhar_Url;

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.saswat.kyc.dto.AadharRequest;
 import com.saswat.kyc.dto.DLnumberrequest;
 import com.saswat.kyc.dto.Dlverificationrequest;
+import com.saswat.kyc.dto.Experianbureaudto;
 import com.saswat.kyc.dto.FileData;
 import com.saswat.kyc.dto.FileResponse;
 import com.saswat.kyc.dto.IndividualPanRequest;
@@ -26,6 +27,7 @@ import com.saswat.kyc.dto.Voterverificationdto;
 import com.saswat.kyc.dto.panfetchrequest;
 import com.saswat.kyc.service.AadharService;
 import com.saswat.kyc.service.DLService;
+import com.saswat.kyc.service.Experianbureauservice;
 import com.saswat.kyc.service.Individualpanservice;
 import com.saswat.kyc.service.PANDataService;
 import com.saswat.kyc.service.PanExtractionService;
@@ -64,6 +66,9 @@ public class kyc_controller {
 	@Autowired
 	AadharService aadharService;
 
+	@Autowired
+	Experianbureauservice experianbureauservice;
+
 	@PostMapping("pan/fetch")
 	public String PanDetails(@RequestBody panfetchrequest fetchrequest) {
 
@@ -77,10 +82,11 @@ public class kyc_controller {
 	}
 
 	@PostMapping(value = "file/upload")
-	public String getFiledata(@RequestParam("file")   MultipartFile file, @RequestParam("ttl") String ttl, HttpServletRequest request, HttpServletResponse response1) {
+	public String getFiledata(@RequestParam("file") MultipartFile file, @RequestParam("ttl") String ttl) {
 
-		//FileResponse response = extractionService.getFileData(fileData,request, response1);
-		return extractionService.getFileData(file,ttl,request, response1);
+		// FileResponse response = extractionService.getFileData(fileData,request,
+		// response1);
+		return extractionService.getFileData(file, ttl);
 	}
 
 	@PostMapping("pan/extraction")
@@ -133,5 +139,10 @@ public class kyc_controller {
 	public String getAatharVerification(@RequestBody AadharRequest aadharRequest) {
 		return aadharService.fetchAatharVerification(aadharRequest);
 
+	}
+
+	@PostMapping("/experian-report")
+	public String getBureauReport(@RequestBody Experianbureaudto bureauDto) {
+		return experianbureauservice.getBureauReport(bureauDto);
 	}
 }

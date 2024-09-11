@@ -24,9 +24,6 @@ import com.saswat.kyc.repository.PanExtractionApiLogRepository;
 import com.saswat.kyc.service.PanExtractionService;
 import com.saswat.kyc.utils.PropertiesConfig;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 @Service
 public class PanExtractionServiceImpl implements PanExtractionService {
 
@@ -42,19 +39,18 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 	@Autowired
 	PropertiesConfig propertiesConfig;
 
-//	private String directURL;
+
 
 	private static final Logger logger = LoggerFactory.getLogger(PanExtractionServiceImpl.class);
 
-	public String getFileData(MultipartFile file, String ttl, HttpServletRequest request,
-			HttpServletResponse response1) {
+	public String getFileData(MultipartFile file, String ttl) {
 
 		logger.info("Starting getFileData method.");
 		FileApiLog apiLog = new FileApiLog();
 		String url = propertiesConfig.getPanextractionfileurl();
 
 		try {
-			String requestURL = request.getRequestURI().toString();
+	
 
 			logger.info("Request URL: {}", url);
 			logger.info("TTL: {}", ttl);
@@ -74,7 +70,7 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 
 			HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-			apiLog.setUrl(requestURL);
+			apiLog.setUrl(url);
 			apiLog.setRequestBody("TTL: " + ttl); // Avoid logging large file data
 
 			logger.info("Sending request to API with body: TTL: {}", ttl);
@@ -95,8 +91,9 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 			logger.error("Error response body: {}", responseBody);
 			apiLog.setResponseBody(responseBody);
 
-			response1.setStatus(e.getStatusCode().value());
-			response1.setContentType("application/json");
+			apiLog.setStatusCode(e.getStatusCode().value());
+			apiLog.setStatus("Failure");
+			
 			return "Error: " + responseBody; // Return an error message as a string
 		} catch (Exception e) {
 			logger.error("Unexpected error during file data retrieval", e);
@@ -104,8 +101,9 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 			apiLog.setStatus("ERROR");
 			String responseBody = e.getMessage();
 			apiLog.setResponseBody(responseBody);
-			response1.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			response1.setContentType("application/json");
+			apiLog.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			apiLog.setStatus("Failure");
+			
 			return "Unexpected error: " + responseBody; // Return an unexpected error message as a string
 		} finally {
 			fileapiLogRepository.save(apiLog);
@@ -152,16 +150,16 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 			logger.error("Too many requests error during PAN extraction", e);
 			apiLog.setStatusCode(HttpStatus.TOO_MANY_REQUESTS.value());
 			apiLog.setStatus("FAILURE");
-			response = e.getResponseBodyAsString();
+			response = "API rate limit exceeded";
 			logger.error("Error response body: {}", response);
-			apiLog.setResponseBodyAsJson("API rate limit exceeded");
+			apiLog.setResponseBody(response);;
 		} catch (HttpClientErrorException.Unauthorized e) {
 			logger.error("Unauthorized error during PAN extraction", e);
 			apiLog.setStatusCode(HttpStatus.UNAUTHORIZED.value());
 			apiLog.setStatus("FAILURE");
-			response = e.getResponseBodyAsString();
+			response = "No API key found in request";
 			logger.error("Error response body: {}", response);
-			apiLog.setResponseBodyAsJson("No API key found in request");
+			apiLog.setResponseBody(response);
 		} catch (HttpClientErrorException e) {
 			logger.error("HTTP client error during PAN extraction", e);
 			apiLog.setStatusCode(e.getStatusCode().value());
