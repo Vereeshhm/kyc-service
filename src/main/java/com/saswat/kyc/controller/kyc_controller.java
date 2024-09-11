@@ -2,7 +2,6 @@ package com.saswat.kyc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +14,6 @@ import com.saswat.kyc.dto.AadharRequest;
 import com.saswat.kyc.dto.DLnumberrequest;
 import com.saswat.kyc.dto.Dlverificationrequest;
 import com.saswat.kyc.dto.Experianbureaudto;
-import com.saswat.kyc.dto.FileData;
-import com.saswat.kyc.dto.FileResponse;
 import com.saswat.kyc.dto.IndividualPanRequest;
 import com.saswat.kyc.dto.PanFileData;
 import com.saswat.kyc.dto.PassportNumberDto;
@@ -34,9 +31,6 @@ import com.saswat.kyc.service.PanExtractionService;
 import com.saswat.kyc.service.Passportservice;
 import com.saswat.kyc.service.Voterservice;
 import com.saswat.kyc.service.Voterverificationservice;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/saswat")

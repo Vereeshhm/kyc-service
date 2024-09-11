@@ -3,9 +3,6 @@ package com.saswat.kyc.model;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
