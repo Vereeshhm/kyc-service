@@ -1,16 +1,11 @@
 package com.saswat.kyc.dto;
 
-
-
-
 public class Voterverificationdto {
 
-	
 	private String epicNumber;
-	
-	
+
 	private String name;
-	
+
 	private String state;
 
 	public String getEpicNumber() {
@@ -36,8 +31,5 @@ public class Voterverificationdto {
 	public void setState(String state) {
 		this.state = state;
 	}
-	
-	
-	
-	
+
 }
