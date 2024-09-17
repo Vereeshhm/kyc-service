@@ -51,6 +51,17 @@ public class PropertiesConfig {
 	@Value("${Experianbureau.url}")
 	private String Experianbureauurl;
 
+//	@Value("${x-client-unique-id}")
+//	private String xclientuniqueid;
+//
+//	public String getXclientuniqueid() {
+//		return xclientuniqueid;
+//	}
+//
+//	public void setXclientuniqueid(String xclientuniqueid) {
+//		this.xclientuniqueid = xclientuniqueid;
+//	}
+	
 	public String getExperianbureauurl() {
 		return Experianbureauurl;
 	}
@@ -67,16 +78,7 @@ public class PropertiesConfig {
 		Aaadhar_Url = aaadhar_Url;
 	}
 
-//	@Value("${x-client-unique-id}")
-//	private String xclientuniqueid;
-//
-//	public String getXclientuniqueid() {
-//		return xclientuniqueid;
-//	}
-//
-//	public void setXclientuniqueid(String xclientuniqueid) {
-//		this.xclientuniqueid = xclientuniqueid;
-//	}
+
 
 	public String getVoterverificationApiUrl() {
 		return voterverificationApiUrl;

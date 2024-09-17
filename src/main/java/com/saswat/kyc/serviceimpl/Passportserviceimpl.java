@@ -85,6 +85,7 @@ public class Passportserviceimpl implements Passportservice {
 	        connection.setRequestProperty("Authorization", propertiesconfig.getToken());
 	        connection.setRequestProperty("Accept", "application/json");
 	        connection.setDoOutput(true);
+	        //connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 
 	        // Log request details
 	        logger.info("RequestBody: {}", requestBodyJson);
@@ -181,7 +182,7 @@ public class Passportserviceimpl implements Passportservice {
 	        connection.setRequestProperty("Authorization", propertiesconfig.getToken());
 	        connection.setRequestProperty("Accept", "application/json");
 	        connection.setDoOutput(true);
-
+	     //   connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 	        // Log request details
 	        logger.info("RequestBody: {}", requestBodyJson);
 	        apiLogentity.setUrl(APIURL);

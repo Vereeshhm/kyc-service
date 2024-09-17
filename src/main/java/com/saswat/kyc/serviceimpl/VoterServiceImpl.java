@@ -83,6 +83,7 @@ public class VoterServiceImpl implements Voterservice {
 			connection.setRequestProperty("Authorization", propertiesconfig.getToken());
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setDoOutput(true);
+			//connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 
 			// Log request details
 			logger.info("RequestBody: {}", requestBodyJson);
@@ -178,6 +179,8 @@ public class VoterServiceImpl implements Voterservice {
 	        connection.setRequestProperty("Authorization", propertiesconfig.getToken());
 	        connection.setRequestProperty("Accept", "application/json");
 	        connection.setDoOutput(true); // To allow sending request body
+	        
+	        //connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 
 	        // Log request details
 	        logger.info("RequestBody: {}", requestBodyJson);

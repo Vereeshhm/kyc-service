@@ -85,6 +85,7 @@ public class Experianbureauserviceimpl implements Experianbureauservice {
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("Authorization", config.getToken());
 			connection.setDoOutput(true); // Enable output for writing request body
+			//connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 
 			// Write request body (JSON)
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {

@@ -55,6 +55,7 @@ public class Individualpanserviceimpl implements Individualpanservice {
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
+			//connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 			connection.setDoOutput(true);

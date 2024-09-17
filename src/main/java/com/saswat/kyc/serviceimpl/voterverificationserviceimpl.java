@@ -75,7 +75,8 @@ public class voterverificationserviceimpl implements Voterverificationservice {
 			connection.setRequestProperty("Authorization", propertiesconfig.getToken());
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setDoOutput(true); // To allow sending request body
-
+			// connection.setRequestProperty("x-client-unique-id",
+			// propertiesConfig.getXclientuniqueid());
 			// Log request details
 			logger.info("Request Body: {}", requestBodyJson);
 			apiLog.setUrl(APIURL);

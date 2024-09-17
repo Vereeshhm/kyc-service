@@ -81,6 +81,7 @@ public class DLServiceImpl implements DLService {
 	        connection.setRequestMethod("POST");
 	        connection.setRequestProperty("Content-Type", "application/json");
 	        connection.setRequestProperty("Accept", "application/json");
+	        //connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 	        connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 	        connection.setDoOutput(true);
 
@@ -181,6 +182,7 @@ public class DLServiceImpl implements DLService {
 	        connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 	        connection.setRequestProperty("Accept", "application/json"); // Added as per request
 	        connection.setDoOutput(true);
+	       // connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 
 	        // Log the request
 	        logger.info("Sending DL details fetch request to API URL: {}, Request Body: {}", APIURL, requestBody);
