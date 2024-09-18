@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saswat.kyc.dto.AadharRequest;
 import com.saswat.kyc.model.Aadharrequestenity;
 import com.saswat.kyc.repository.Aadharrequestenityrepository;
@@ -39,8 +39,9 @@ public class AadharServiceImpl implements AadharService {
 		String requestPacket = null;
 		String Response = null;
 		try {
-			Gson gson = new Gson();
-			requestPacket = gson.toJson(aadharRequest);
+			ObjectMapper objectMapper = new ObjectMapper();
+			requestPacket = objectMapper.writeValueAsString(aadharRequest);
+
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", propertiesconfig.getToken());

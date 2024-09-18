@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +18,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 public class MultipleDBConfiguration {
@@ -69,7 +69,7 @@ public class MultipleDBConfiguration {
 					em.setJpaProperties(properties);
 					em.setPersistenceProviderClass(HibernatePersistenceProvider.class);
 					em.afterPropertiesSet();
-					datasourceFactory.put(instanceAndDB, entityManagerFactory = em.getObject());
+					datasourceFactory.put(instanceAndDB, entityManagerFactory = (EntityManagerFactory) em.getObject());
 				}
 			}
 		}
