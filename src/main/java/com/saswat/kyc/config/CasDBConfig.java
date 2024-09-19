@@ -74,15 +74,12 @@ public class CasDBConfig {
 				.build();
 	}
 
-	/**
-	 * Define the primary Transaction Manager for managing transactions.
-	 */
+
 	@Primary
 	@Bean(name = "casTransactionManager")
 	public PlatformTransactionManager transactionManager(
 			@Qualifier("casEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
 
-		// Use JpaTransactionManager with the primary EntityManagerFactory
-		return new JpaTransactionManager(entityManagerFactory);
+		return new JpaTransactionManager();
 	}
 }

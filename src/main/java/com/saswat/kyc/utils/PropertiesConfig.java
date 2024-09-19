@@ -50,6 +50,18 @@ public class PropertiesConfig {
 	
 	@Value("${Experianbureau.url}")
 	private String Experianbureauurl;
+	
+	@Value("${PhoneKyc.generateOtp}")
+	private String PhoneKycgenerateOtp;
+	
+	@Value("${PhoneKyc.submitOtp}")
+	private String PhoneKycsubmitOtp;
+	
+	@Value("${PhoneKyc.nonconsent}")
+	private String PhoneKycnonconsent;
+	
+	@Value("${countryCode}")
+	private String countryCode;
 
 //	@Value("${x-client-unique-id}")
 //	private String xclientuniqueid;
@@ -62,8 +74,40 @@ public class PropertiesConfig {
 //		this.xclientuniqueid = xclientuniqueid;
 //	}
 	
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
 	public String getExperianbureauurl() {
 		return Experianbureauurl;
+	}
+
+	public String getPhoneKycnonconsent() {
+		return PhoneKycnonconsent;
+	}
+
+	public void setPhoneKycnonconsent(String phoneKycnonconsent) {
+		PhoneKycnonconsent = phoneKycnonconsent;
+	}
+
+	public String getPhoneKycsubmitOtp() {
+		return PhoneKycsubmitOtp;
+	}
+
+	public void setPhoneKycsubmitOtp(String phoneKycsubmitOtp) {
+		PhoneKycsubmitOtp = phoneKycsubmitOtp;
+	}
+
+	public String getPhoneKycgenerateOtp() {
+		return PhoneKycgenerateOtp;
+	}
+
+	public void setPhoneKycgenerateOtp(String phoneKycgenerateOtp) {
+		PhoneKycgenerateOtp = phoneKycgenerateOtp;
 	}
 
 	public void setExperianbureauurl(String experianbureauurl) {

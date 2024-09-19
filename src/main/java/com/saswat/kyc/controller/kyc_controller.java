@@ -2,6 +2,7 @@ package com.saswat.kyc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,9 @@ import com.saswat.kyc.dto.IndividualPanRequest;
 import com.saswat.kyc.dto.PanFileData;
 import com.saswat.kyc.dto.PassportNumberDto;
 import com.saswat.kyc.dto.PassportVerificationDto;
+import com.saswat.kyc.dto.Phonekycgenerateotpdto;
+import com.saswat.kyc.dto.Phonekycnonconsentdto;
+import com.saswat.kyc.dto.Phonekycsubmitotpdto;
 import com.saswat.kyc.dto.Voterdetaileddto;
 import com.saswat.kyc.dto.Voterfetchdto;
 import com.saswat.kyc.dto.Voterverificationdto;
@@ -29,6 +33,7 @@ import com.saswat.kyc.service.Individualpanservice;
 import com.saswat.kyc.service.PANDataService;
 import com.saswat.kyc.service.PanExtractionService;
 import com.saswat.kyc.service.Passportservice;
+import com.saswat.kyc.service.Phonekycotpservice;
 import com.saswat.kyc.service.Voterservice;
 import com.saswat.kyc.service.Voterverificationservice;
 
@@ -62,6 +67,9 @@ public class kyc_controller {
 
 	@Autowired
 	Experianbureauservice experianbureauservice;
+
+	@Autowired
+	Phonekycotpservice phonekycotpservice;
 
 	@PostMapping("pan/fetch")
 	public String PanDetails(@RequestBody panfetchrequest fetchrequest) {
@@ -139,4 +147,24 @@ public class kyc_controller {
 	public String getBureauReport(@RequestBody Experianbureaudto bureauDto) {
 		return experianbureauservice.getBureauReport(bureauDto);
 	}
+
+	@PostMapping("/v3/phone/generateOtp")
+	public ResponseEntity<String> generateOtp(@RequestBody Phonekycgenerateotpdto phonekycgenerateotpdto)
+
+	{
+		return phonekycotpservice.generateOtp(phonekycgenerateotpdto);
+	}
+	
+	@PostMapping("/v3/phone/submitOtp")
+	public ResponseEntity<String> submitOtp(@RequestBody Phonekycsubmitotpdto phonekycsubmitotpdto)
+	{
+		return phonekycotpservice.submitOtp(phonekycsubmitotpdto);
+	}
+	
+	@PostMapping("/v3/phone/phonekycotpless")
+	public ResponseEntity<String> nonConsent(@RequestBody Phonekycnonconsentdto phonekycnonconsentdto)
+	{
+		return phonekycotpservice.nonConsent(phonekycnonconsentdto);
+	}
+	
 }

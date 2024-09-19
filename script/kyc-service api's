@@ -456,7 +456,92 @@ Responsebody :
    }
 }
 
-13.experian bureau : https://98.70.77.51:8083/kyc/saswat/experian-report
+
+13.Phone-Kyc Generate Otp : https://98.70.77.51:8083/kyc/saswat/v3/phone/generateOtp
+
+
+Request body: 
+{
+    "mobileNumber": "9880418761"
+}
+
+Response body:
+{
+"result":
+{
+"referenceId":"telecom_1fVQeeDNXH1IY9dcHqXMNTS2rBoBKYEV"
+}
+}
+
+14.Phone-Kyc Submit otp: https://98.70.77.51:8083/kyc/saswat/v3/phone/submitOtp
+
+
+Request body :
+{
+    "mobileNumber": "9880418761",
+    "otp": "574333"
+}
+
+Response body:
+{
+  "result": {
+    "address": "3/97, Gunjahalli, Gillesugur, Raichur, Ka-584140",
+    "mobileNetworkOperator": "jio",
+    "billingType": "prepaid",
+    "alternatePhone": "7760094801",
+    "extraFields": {},
+    "name": "Vereesh Hereemata",
+    "countryCode": "91",
+    "email": "",
+    "splitAddress": {
+      "city": [
+        "GILLESUGUR"
+      ],
+      "addressLine": "3/97,GUNJAHALLI",
+      "state": [
+        [
+          "KARNATAKA",
+          "KA"
+        ]
+      ],
+      "country": [
+        "IN",
+        "IND",
+        "INDIA"
+      ],
+      "district": [
+        "RAICHUR"
+      ],
+      "pincode": "584140"
+    },
+    "mobileNumber": "9880418761",
+    "dob": "2001-11-07"
+  }
+}
+
+
+15: Phone-Kyc Non consent : https://98.70.77.51:8083/kyc/saswat/v3/phone/phonekycotpless
+
+Request body:
+{
+    "mobileNumber": "9880418761"
+}
+
+Response body:
+{
+  "customerName": "Viresh Hirematha",
+  "alternateNumber": "",
+  "isValid": true,
+  "subscriberStatus": "CONNECTED",
+  "connectionType": "prepaid",
+  "currentServiceProvider": "JIO",
+  "originalServiceProvider": "AIRTEL",
+  "networkRegion": "Karnataka",
+  "isPorted": true
+}
+
+
+16.experian bureau : https://98.70.77.51:8083/kyc/saswat/experian-report
 
 Request body:
 {
