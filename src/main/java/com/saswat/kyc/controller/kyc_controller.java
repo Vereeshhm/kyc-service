@@ -17,6 +17,7 @@ import com.saswat.kyc.dto.Dlverificationrequest;
 import com.saswat.kyc.dto.Experianbureaudto;
 import com.saswat.kyc.dto.IndividualPanRequest;
 import com.saswat.kyc.dto.PanFileData;
+import com.saswat.kyc.dto.Panfetchdto;
 import com.saswat.kyc.dto.PassportNumberDto;
 import com.saswat.kyc.dto.PassportVerificationDto;
 import com.saswat.kyc.dto.Phonekycgenerateotpdto;
@@ -71,7 +72,7 @@ public class kyc_controller {
 	@Autowired
 	Phonekycotpservice phonekycotpservice;
 
-	@PostMapping("pan/fetch")
+	@PostMapping("pan/fetchV2")
 	public String PanDetails(@RequestBody panfetchrequest fetchrequest) {
 
 		return panservice.getPanDetails(fetchrequest);
@@ -165,6 +166,12 @@ public class kyc_controller {
 	public ResponseEntity<String> nonConsent(@RequestBody Phonekycnonconsentdto phonekycnonconsentdto)
 	{
 		return phonekycotpservice.nonConsent(phonekycnonconsentdto);
+	}
+	
+	@PostMapping("/v3/pan/fetch")
+	public ResponseEntity<String> fetchByPanNumber(@RequestBody Panfetchdto panfetchdto)
+	{
+		return panservice.fetchByPanNumber(panfetchdto);
 	}
 	
 }

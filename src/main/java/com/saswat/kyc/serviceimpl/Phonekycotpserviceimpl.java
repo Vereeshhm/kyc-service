@@ -7,7 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,6 +105,7 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 			PhoneKycGeneratedotpentity generatedotpentity = new PhoneKycGeneratedotpentity();
 			generatedotpentity.setCountryCode(propertiesConfig.getCountryCode());
 			generatedotpentity.setMobileNumber(phonekycgenerateotpdto.getMobileNumber());
+			generatedotpentity.setCreatedDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 			generatedotpentityrepository.save(generatedotpentity);
 
 			// Open the connection
@@ -168,7 +171,7 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 
 				response1 = response.toString();
 				JsonObject errorResponse = gson.fromJson(response1, JsonObject.class);
-				String errorMessage = "Unknown error"; // Default error message
+				String errorMessage = "Unknown error";
 
 				if (errorResponse.has("message")) {
 
@@ -186,11 +189,9 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 					errorMessage = "No 'message' or 'error' object found in the response.";
 				}
 
-				// Set the dynamically captured error message and update the status to "Failed"
 				phonekycgenerateotprequestentity.setMessage(errorMessage);
 				phonekycgenerateotprequestentity.setStatusmsg("Failed");
 
-				// Save the entity with the updated error message
 				phonekycgenerateotprequestentityrepository.save(phonekycgenerateotprequestentity);
 				// Log the error and response
 				logApi(Apiurl, requestbodyJson, response1, HttpStatus.valueOf(responseCode), "failure",
@@ -237,23 +238,36 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 		HttpURLConnection connection = null;
 
 		try {
-			// Fetch the most recent entries for the given mobile number
+
 			List<PhoneKycGeneratedotpentity> entities = generatedotpentityrepository
 					.findByMobileNumberOrderByIdDesc(phonekycsubmitotpdto.getMobileNumber());
 
 			if (entities.isEmpty()) {
 				logger.error("No referenceId found for mobileNumber: {}", phonekycsubmitotpdto.getMobileNumber());
 
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid mobile number.");
+				Map<String, Object> errorResponse = new HashMap<>();
+
+				errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
+				errorResponse.put("message", "Mobile number is not valid");
+				errorResponse.put("name", "Error");
+				errorResponse.put("statusCode", HttpStatus.BAD_REQUEST.value());
+
+				logger.error("Error response " + errorResponse);
+
+				logApi(Apiurl, gson.toJson(phonekycsubmitotpdto), gson.toJson(errorResponse),
+						HttpStatus.BAD_REQUEST, "Failure", "phonekyc submitotp");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(gson.toJson(errorResponse));
 			}
 
-			// Get the most recent entry (first in the sorted list)
 			PhoneKycGeneratedotpentity generateOtpEntity = entities.get(0);
 			String referenceId = generateOtpEntity.getReferenceId();
-			logger.info("Retrieved referenceId from the repository :{} ", referenceId);
+			logger.info("Retrieved referenceId from the generated otp table :{} ", referenceId);
 
 			phonekycsubmitotpdto.setReferenceId(referenceId);
-			phonekycsubmitotpdto.setCountryCode(propertiesConfig.getCountryCode());
+
+			phonekycsubmitotpdto.setCountryCode(generateOtpEntity.getCountryCode());
+			logger.info("Retrieved countryCode from the generated otp table :{} ", generateOtpEntity.getCountryCode());
+
 			requestbodyJson = gson.toJson(phonekycsubmitotpdto);
 			logger.info("Sending Requestbody " + requestbodyJson);
 
@@ -338,11 +352,9 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 					errorMessage = "No 'message' or 'error' object found in the response.";
 				}
 
-				// Set the dynamically captured error message and update the status to "Failed"
 				phonekycsubmitotprequestentity.setMessage(errorMessage);
 				phonekycsubmitotprequestentity.setStatusmsg("Failed");
 
-				// Save the entity with the updated error message
 				phonekycsubmitotprequestentityrepository.save(phonekycsubmitotprequestentity);
 
 				logApi(Apiurl, requestbodyJson, response1, HttpStatus.valueOf(responseCode), "failure",
@@ -364,6 +376,7 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 			}
 		}
 	}
+
 
 	@Override
 	public ResponseEntity<String> nonConsent(Phonekycnonconsentdto phonekycnonconsentdto) {
@@ -407,7 +420,7 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 			// Check if the response was successful (HTTP 200)
 			StringBuilder response = new StringBuilder();
 			if (responseCode == HttpStatus.OK.value()) {
-				// Read the response from the input stream
+
 				try (BufferedReader in = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), "utf-8"))) {
 

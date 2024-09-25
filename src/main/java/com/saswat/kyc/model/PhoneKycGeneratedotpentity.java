@@ -1,5 +1,8 @@
 package com.saswat.kyc.model;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +22,17 @@ public class PhoneKycGeneratedotpentity {
 	private String mobileNumber;
 
 	private String referenceId;
+	
+	@Column(name="created_date")
+	private LocalDateTime createdDate;
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
 
 	public int getId() {
 		return id;

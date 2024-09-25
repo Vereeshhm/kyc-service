@@ -62,6 +62,9 @@ public class PropertiesConfig {
 	
 	@Value("${countryCode}")
 	private String countryCode;
+	
+	@Value("${panfetch.url}")
+	private String panfetchurl;
 
 //	@Value("${x-client-unique-id}")
 //	private String xclientuniqueid;
@@ -76,6 +79,14 @@ public class PropertiesConfig {
 	
 	public String getCountryCode() {
 		return countryCode;
+	}
+
+	public String getPanfetchurl() {
+		return panfetchurl;
+	}
+
+	public void setPanfetchurl(String panfetchurl) {
+		this.panfetchurl = panfetchurl;
 	}
 
 	public void setCountryCode(String countryCode) {

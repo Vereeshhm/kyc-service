@@ -52,4 +52,10 @@ public class Phonekycsubmitotpdto {
 		this.extraFields = extraFields;
 	}
 
+	@Override
+	public String toString() {
+		return "Phonekycsubmitotpdto [countryCode=" + countryCode + ", mobileNumber=" + mobileNumber + ", referenceId="
+				+ referenceId + ", otp=" + otp + ", extraFields=" + extraFields + "]";
+	}
+
 }
