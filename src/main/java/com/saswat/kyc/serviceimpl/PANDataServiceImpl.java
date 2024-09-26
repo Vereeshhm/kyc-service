@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,26 +48,47 @@ public class PANDataServiceImpl implements PANDataService {
 
 	@Autowired
 	Panfetchv3detailsrepository panfetchv3detailsrepository;
-	
+
 	@Autowired
 	panfetchrequestentityrepository panfetchrequestentityrepository;
-	
 
 	@Override
-	public String getPanDetails(panfetchrequest fetchrequest) {
+	public ResponseEntity<String> getPanDetails(panfetchrequest fetchrequest) {
 
 		logger.info("Starting getPanDetails method.");
 		PANDataApiLog apiLog = new PANDataApiLog();
 		String response1 = null;
 
 		HttpURLConnection connection = null;
+		Gson gson = new Gson();
+		String panNumber = fetchrequest.getNumber();
+
+		if (!isValidPan(panNumber)) {
+			Map<String, Object> errorResponse = new HashMap<>();
+			errorResponse.put("name", "error");
+			errorResponse.put("message", "Pan number should be in proper format (uppercase letters only).");
+			errorResponse.put("status", "Bad Request");
+			errorResponse.put("statusCode", HttpStatus.BAD_REQUEST.value());
+			logger.error("Invalid PAN format: {}", panNumber);
+
+			String errorResponseBodyJson = gson.toJson(errorResponse);
+			apiLog.setUrl(propertiesConfig.getPanApiURL());
+			apiLog.setRequestBody(fetchrequest.toString());
+			apiLog.setResponseBody(errorResponseBodyJson);
+			apiLog.setStatusmsg("Failed");
+			apiLog.setStatusCode(HttpStatus.BAD_REQUEST.value());
+			apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+			apiLog.setApiType("Pan fetch v2");
+			apiLog.setAuthorizationToken(propertiesConfig.getToken());
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseBodyJson);
+		}
 
 		try {
 			String APIURL = propertiesConfig.getPanApiURL();
 
 			logger.info("API URL: {}", APIURL);
 
-			Gson gson = new Gson();
 			String requestBodyJson = gson.toJson(fetchrequest);
 
 			URL url = new URL(APIURL);
@@ -85,7 +108,6 @@ public class PANDataServiceImpl implements PANDataService {
 			apiLog.setAuthorizationToken(propertiesConfig.getToken());
 
 			Panfetchv3details fetchdetails = new Panfetchv3details();
-
 			fetchdetails.setAuthorizationToken(propertiesConfig.getToken());
 			fetchdetails.setNumber(fetchrequest.getNumber());
 			fetchdetails.setReturnIndividualTaxComplianceInfo(fetchrequest.getReturnIndividualTaxComplianceInfo());
@@ -133,7 +155,7 @@ public class PANDataServiceImpl implements PANDataService {
 
 				panfetchv3detailsrepository.save(fetchdetails);
 
-				return response1;
+				return ResponseEntity.status(responseCode).body(response1);
 			} else {
 				handleHttpError(responseCode, response1, apiLog);
 			}
@@ -150,7 +172,7 @@ public class PANDataServiceImpl implements PANDataService {
 			apiLogRepository.save(apiLog);
 			logger.info("API log saved.");
 		}
-		return response1;
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response1);
 	}
 
 	private void handleHttpError(int responseCode, String responseBody, PANDataApiLog apiLog) {
@@ -199,6 +221,13 @@ public class PANDataServiceImpl implements PANDataService {
 		logger.error("Exception occurred: {}", e.getMessage(), e);
 	}
 
+	public boolean isValidPan(String panNumber) {
+
+		String panPattern = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
+		return panNumber.matches(panPattern);
+
+	}
+
 	@Override
 	public ResponseEntity<String> fetchByPanNumber(Panfetchdto panfetchdto) {
 
@@ -217,14 +246,14 @@ public class PANDataServiceImpl implements PANDataService {
 			requestBodyJson = gson.toJson(panfetchdto);
 
 			logger.info("Sending Request body " + requestBodyJson);
-			
-			panfetchrequestentity panfetchrequestentity=new panfetchrequestentity();
+
+			panfetchrequestentity panfetchrequestentity = new panfetchrequestentity();
 			panfetchrequestentity.setPanNumber(panfetchdto.getPanNumber());
 			panfetchrequestentity.setStatusmsg("sent successfully");
 			panfetchrequestentity.setCreatedDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-			
+
 			panfetchrequestentityrepository.save(panfetchrequestentity);
-			
+
 			apiLog.setRequestBody(requestBodyJson);
 			apiLog.setAuthorizationToken(propertiesConfig.getToken());
 			apiLog.setUrl(Apiurl);
@@ -248,7 +277,7 @@ public class PANDataServiceImpl implements PANDataService {
 			StringBuilder responseContent = new StringBuilder();
 
 			if (responseCode == HttpStatus.OK.value()) {
-				// Read the response from the input stream
+
 				try (BufferedReader in = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), "utf-8"))) {
 
@@ -259,7 +288,7 @@ public class PANDataServiceImpl implements PANDataService {
 
 				}
 				response = responseContent.toString();
-				
+
 				apiLog.setResponseBody(response);
 				apiLog.setStatusCode(responseCode);
 				apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
@@ -282,7 +311,7 @@ public class PANDataServiceImpl implements PANDataService {
 				}
 
 				response = responseContent.toString();
-				
+
 				apiLog.setResponseBody(response);
 				apiLog.setStatusCode(responseCode);
 				apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));

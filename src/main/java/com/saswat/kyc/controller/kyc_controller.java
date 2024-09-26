@@ -73,7 +73,7 @@ public class kyc_controller {
 	Phonekycotpservice phonekycotpservice;
 
 	@PostMapping("pan/fetchV2")
-	public String PanDetails(@RequestBody panfetchrequest fetchrequest) {
+	public ResponseEntity<String> PanDetails(@RequestBody panfetchrequest fetchrequest) {
 
 		return panservice.getPanDetails(fetchrequest);
 	}

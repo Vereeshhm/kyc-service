@@ -239,6 +239,21 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 
 		try {
 
+			if (phonekycsubmitotpdto.getMobileNumber() == null || phonekycsubmitotpdto.getMobileNumber().isEmpty()) {
+
+				Map<String, Object> errorResponse = new HashMap<>();
+				errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
+				errorResponse.put("message", "Mobile number is not allowed to be empty string");
+				errorResponse.put("name", "Error");
+				errorResponse.put("statusCode", HttpStatus.BAD_REQUEST.value());
+
+				logger.error("Error response " + errorResponse);
+
+				logApi(Apiurl, gson.toJson(phonekycsubmitotpdto), gson.toJson(errorResponse), HttpStatus.BAD_REQUEST,
+						"Failure", "phonekyc submitotp");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(gson.toJson(errorResponse));
+			}
+
 			List<PhoneKycGeneratedotpentity> entities = generatedotpentityrepository
 					.findByMobileNumberOrderByIdDesc(phonekycsubmitotpdto.getMobileNumber());
 
@@ -254,8 +269,8 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 
 				logger.error("Error response " + errorResponse);
 
-				logApi(Apiurl, gson.toJson(phonekycsubmitotpdto), gson.toJson(errorResponse),
-						HttpStatus.BAD_REQUEST, "Failure", "phonekyc submitotp");
+				logApi(Apiurl, gson.toJson(phonekycsubmitotpdto), gson.toJson(errorResponse), HttpStatus.BAD_REQUEST,
+						"Failure", "phonekyc submitotp");
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(gson.toJson(errorResponse));
 			}
 
@@ -376,7 +391,6 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 			}
 		}
 	}
-
 
 	@Override
 	public ResponseEntity<String> nonConsent(Phonekycnonconsentdto phonekycnonconsentdto) {

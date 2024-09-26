@@ -12,7 +12,7 @@ import com.saswat.kyc.dto.panfetchrequest;
 public interface PANDataService {
 
 
-	public String getPanDetails(panfetchrequest fetchrequest);
+	public ResponseEntity<String> getPanDetails(panfetchrequest fetchrequest);
 
 	public ResponseEntity<String> fetchByPanNumber(Panfetchdto panfetchdto);
 
