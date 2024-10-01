@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.saswat.kyc.dto.Phonekycgenerateotpdto;
 import com.saswat.kyc.dto.Phonekycnonconsentdto;
 import com.saswat.kyc.dto.Phonekycsubmitotpdto;
@@ -116,7 +117,7 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 			connection.setDoOutput(true);
-
+			// connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
 				wr.writeBytes(requestbodyJson);
 				wr.flush();
@@ -305,7 +306,7 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 			connection.setDoOutput(true);
-
+			// connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
 				wr.writeBytes(requestbodyJson);
 				wr.flush();
@@ -422,7 +423,7 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 			connection.setDoOutput(true);
-
+			// connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
 				wr.writeBytes(requestbodyJson);
 				wr.flush();
@@ -466,18 +467,34 @@ public class Phonekycotpserviceimpl implements Phonekycotpservice {
 				}
 
 				response1 = response.toString();
-				JsonObject errorResponse = gson.fromJson(response1, JsonObject.class);
-				JsonObject errorObject = errorResponse.getAsJsonObject("error");
-				String errorMessage = errorObject.has("message") ? errorObject.get("message").getAsString()
-						: "Unknown error";
+				JsonObject errorResponse;
+				try {
+					errorResponse = gson.fromJson(response1, JsonObject.class);
+				} catch (JsonSyntaxException e) {
+					logger.error("Failed to parse error response: {}", e.getMessage());
+					errorResponse = null; // Handle case where JSON is invalid
+				}
 
+				// Default error message
+				String errorMessage = "Unknown error";
+
+				// Extract "message" from error response, if available
+				if (errorResponse != null && errorResponse.has("message")) {
+					errorMessage = errorResponse.get("message").getAsString();
+				}
+
+				// Build the proper response structure
+				JsonObject errorResponseObject = new JsonObject();
+				errorResponseObject.addProperty("message", errorMessage);
+
+				// Set entity with error message and save it
 				phonekycnonconsentrequestentity.setMessage(errorMessage);
 				phonekycnonconsentrequestentity.setStatusmsg("Failed");
 				phonekycnonconsentrequestentityrepository.save(phonekycnonconsentrequestentity);
 
 				logger.error("Error ResponseBody: {}", response1);
-				logApi(Apiurl, requestbodyJson, response1, HttpStatus.valueOf(responseCode), "failure",
-						"phonekyc nonconsent");
+				logApi(Apiurl, requestbodyJson, errorResponseObject.toString(), HttpStatus.valueOf(responseCode),
+						"failure", "phonekyc nonconsent");
 				return ResponseEntity.status(responseCode).body(response1);
 			}
 

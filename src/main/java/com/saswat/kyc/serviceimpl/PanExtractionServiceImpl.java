@@ -39,8 +39,6 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 	@Autowired
 	PropertiesConfig propertiesConfig;
 
-
-
 	private static final Logger logger = LoggerFactory.getLogger(PanExtractionServiceImpl.class);
 
 	public String getFileData(MultipartFile file, String ttl) {
@@ -50,7 +48,6 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 		String url = propertiesConfig.getPanextractionfileurl();
 
 		try {
-	
 
 			logger.info("Request URL: {}", url);
 			logger.info("TTL: {}", ttl);
@@ -93,7 +90,7 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 
 			apiLog.setStatusCode(e.getStatusCode().value());
 			apiLog.setStatus("Failure");
-			
+
 			return "Error: " + responseBody; // Return an error message as a string
 		} catch (Exception e) {
 			logger.error("Unexpected error during file data retrieval", e);
@@ -103,7 +100,7 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 			apiLog.setResponseBody(responseBody);
 			apiLog.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			apiLog.setStatus("Failure");
-			
+
 			return "Unexpected error: " + responseBody; // Return an unexpected error message as a string
 		} finally {
 			fileapiLogRepository.save(apiLog);
@@ -120,9 +117,6 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 
 		try {
 
-			//logger.info("Direct URL set in files parameter: {}", panfiledata.getFiles().get(0));
-
-			// Optional: Retrieve other properties from pandto (type, getRelativeData)
 			logger.info("PAN DTO details - Type: {}, GetRelativeData: {}", panfiledata.getType(),
 					panfiledata.isGetRelativeData());
 
@@ -152,7 +146,8 @@ public class PanExtractionServiceImpl implements PanExtractionService {
 			apiLog.setStatus("FAILURE");
 			response = "API rate limit exceeded";
 			logger.error("Error response body: {}", response);
-			apiLog.setResponseBody(response);;
+			apiLog.setResponseBody(response);
+			;
 		} catch (HttpClientErrorException.Unauthorized e) {
 			logger.error("Unauthorized error during PAN extraction", e);
 			apiLog.setStatusCode(HttpStatus.UNAUTHORIZED.value());

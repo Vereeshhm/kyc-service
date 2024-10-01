@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.saswat.kyc.dto.AadharRequest;
 import com.saswat.kyc.dto.DLnumberrequest;
 import com.saswat.kyc.dto.Dlverificationrequest;
+import com.saswat.kyc.dto.ElectricityRequest;
 import com.saswat.kyc.dto.Experianbureaudto;
 import com.saswat.kyc.dto.IndividualPanRequest;
 import com.saswat.kyc.dto.PanFileData;
@@ -29,6 +30,7 @@ import com.saswat.kyc.dto.Voterverificationdto;
 import com.saswat.kyc.dto.panfetchrequest;
 import com.saswat.kyc.service.AadharService;
 import com.saswat.kyc.service.DLService;
+import com.saswat.kyc.service.ElectricityService;
 import com.saswat.kyc.service.Experianbureauservice;
 import com.saswat.kyc.service.Individualpanservice;
 import com.saswat.kyc.service.PANDataService;
@@ -72,69 +74,70 @@ public class kyc_controller {
 	@Autowired
 	Phonekycotpservice phonekycotpservice;
 
-	@PostMapping("pan/fetchV2")
+	@Autowired
+	ElectricityService electricityService;
+
+	@PostMapping(value="pan/fetchV2", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> PanDetails(@RequestBody panfetchrequest fetchrequest) {
 
 		return panservice.getPanDetails(fetchrequest);
 	}
 
 	@PostMapping(value = "/panverification", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getPanVerification(@RequestBody IndividualPanRequest panRequest) {
+	public ResponseEntity<String> getPanVerification(@RequestBody IndividualPanRequest panRequest) {
 		return individualpanservice.getPanVerification(panRequest);
 
 	}
 
-	@PostMapping(value = "file/upload")
+	@PostMapping(value = "file/upload",produces=MediaType.APPLICATION_JSON_VALUE)
 	public String getFiledata(@RequestParam("file") MultipartFile file, @RequestParam("ttl") String ttl) {
 
-		// FileResponse response = extractionService.getFileData(fileData,request,
-		// response1);
 		return extractionService.getFileData(file, ttl);
 	}
 
-	@PostMapping("pan/extraction")
+	@PostMapping(value="pan/extraction",produces=MediaType.APPLICATION_JSON_VALUE)
 	public String getPanExtractedData(@RequestBody PanFileData panfiledata) {
 		return extractionService.getPanExtractedData(panfiledata);
 	}
 
-	@PostMapping("api/DL/Verification")
-	public String Verification(@RequestBody Dlverificationrequest dlverificationrequest) {
+	@PostMapping(value="api/DL/Verification",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> Verification(@RequestBody Dlverificationrequest dlverificationrequest) {
 
 		return dlService.getVerfication(dlverificationrequest);
 	}
 
-	@PostMapping("api/DL/numberbased")
-	public String fetchdetails(@RequestBody DLnumberrequest dlnumberrequest) {
+	@PostMapping(value="api/DL/numberbased",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> fetchdetails(@RequestBody DLnumberrequest dlnumberrequest) {
 
 		return dlService.getFetchDetails(dlnumberrequest);
 	}
 
-	@PostMapping("api/passport/verify")
-	public String Verify(@RequestBody PassportVerificationDto passportVerificationDto) {
+	@PostMapping(value="api/passport/verify",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> Verify(@RequestBody PassportVerificationDto passportVerificationDto) {
 
 		return passportservice.getVerify(passportVerificationDto);
 	}
 
-	@PostMapping("api/passport/fetch")
-	public String details(@RequestBody PassportNumberDto pasportdto) {
+	@PostMapping(value="api/passport/fetch",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> details(@RequestBody PassportNumberDto pasportdto) {
 
 		return passportservice.getDetails(pasportdto);
 	}
 
-	@PostMapping("api/voterid/detailedsearch")
-	public String fetchAll(@RequestBody Voterdetaileddto voterdetaileddto) throws JsonProcessingException {
+	@PostMapping(value="api/voterid/detailedsearch",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> fetchAll(@RequestBody Voterdetaileddto voterdetaileddto) throws JsonProcessingException {
 
 		return voterservice.getfetchAll(voterdetaileddto);
 	}
 
-	@PostMapping("api/voterid/fetch")
-	public String fetchdetails(@RequestBody Voterfetchdto voterfetchdto) throws JsonProcessingException {
+	@PostMapping(value="api/voterid/fetch",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> fetchdetails(@RequestBody Voterfetchdto voterfetchdto) throws JsonProcessingException {
 
 		return voterservice.getfetchdetails(voterfetchdto);
 	}
 
-	@PostMapping("api/voter-id/verification")
-	public String getVerify(@RequestBody Voterverificationdto voterverificationdto) {
+	@PostMapping(value="api/voter-id/verification",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getVerify(@RequestBody Voterverificationdto voterverificationdto) {
 		return voterverificationservice.getVerify(voterverificationdto);
 	}
 
@@ -144,34 +147,36 @@ public class kyc_controller {
 
 	}
 
-	@PostMapping("/experian-report")
-	public String getBureauReport(@RequestBody Experianbureaudto bureauDto) {
+	@PostMapping(value="/experian-report",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getBureauReport(@RequestBody Experianbureaudto bureauDto) {
 		return experianbureauservice.getBureauReport(bureauDto);
 	}
 
-	@PostMapping("/v3/phone/generateOtp")
+	@PostMapping(value="/v3/phone/generateOtp",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> generateOtp(@RequestBody Phonekycgenerateotpdto phonekycgenerateotpdto)
 
 	{
 		return phonekycotpservice.generateOtp(phonekycgenerateotpdto);
 	}
-	
-	@PostMapping("/v3/phone/submitOtp")
-	public ResponseEntity<String> submitOtp(@RequestBody Phonekycsubmitotpdto phonekycsubmitotpdto)
-	{
+
+	@PostMapping(value="/v3/phone/submitOtp",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> submitOtp(@RequestBody Phonekycsubmitotpdto phonekycsubmitotpdto) {
 		return phonekycotpservice.submitOtp(phonekycsubmitotpdto);
 	}
-	
-	@PostMapping("/v3/phone/phonekycotpless")
-	public ResponseEntity<String> nonConsent(@RequestBody Phonekycnonconsentdto phonekycnonconsentdto)
-	{
+
+	@PostMapping(value="/v3/phone/phonekycotpless",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> nonConsent(@RequestBody Phonekycnonconsentdto phonekycnonconsentdto) {
 		return phonekycotpservice.nonConsent(phonekycnonconsentdto);
 	}
-	
-	@PostMapping("/v3/pan/fetch")
-	public ResponseEntity<String> fetchByPanNumber(@RequestBody Panfetchdto panfetchdto)
-	{
+
+	@PostMapping(value="/v3/pan/fetch",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> fetchByPanNumber(@RequestBody Panfetchdto panfetchdto) {
 		return panservice.fetchByPanNumber(panfetchdto);
 	}
-	
+
+	@PostMapping(value="/electricitybill/fetch",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getElectricityBill(@RequestBody ElectricityRequest electricityRequest) {
+		return electricityService.getElectricityBill(electricityRequest);
+	}
+
 }

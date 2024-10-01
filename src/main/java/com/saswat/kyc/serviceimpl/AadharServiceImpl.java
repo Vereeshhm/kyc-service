@@ -2,13 +2,11 @@ package com.saswat.kyc.serviceimpl;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saswat.kyc.dto.AadharRequest;
 import com.saswat.kyc.model.Aadharrequestenity;
@@ -28,6 +26,7 @@ public class AadharServiceImpl implements AadharService {
 
 	@Autowired
 	AadharApiLogs aadharApiLogs;
+	
 	@Autowired
 	Aadharrequestenityrepository aadharrequestenityrepository;
 
@@ -60,7 +59,6 @@ public class AadharServiceImpl implements AadharService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			Response = e.getMessage();
-
 			aadharApiLogs.saveAAdharApiLogs(requestPacket, Response, apiName, timeStamp);
 			return Response;
 		}

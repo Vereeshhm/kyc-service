@@ -14,7 +14,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -54,52 +56,56 @@ public class PANDataServiceImpl implements PANDataService {
 
 	@Override
 	public ResponseEntity<String> getPanDetails(panfetchrequest fetchrequest) {
-
 		logger.info("Starting getPanDetails method.");
 		PANDataApiLog apiLog = new PANDataApiLog();
 		String response1 = null;
-
 		HttpURLConnection connection = null;
 		Gson gson = new Gson();
 		String panNumber = fetchrequest.getNumber();
+		StringBuilder responseContent = new StringBuilder();
+		String APIURL = propertiesConfig.getPanApiURL();
+		logger.info("API URL: {}", APIURL);
 
-		if (!isValidPan(panNumber)) {
+		// Convert request to JSON
+		String requestBodyJson = gson.toJson(fetchrequest);
+
+		// Validate PAN number before making the API call
+		if (!isValidPanNumber(panNumber)) {
+			// Return error response for invalid PAN number with error object
 			Map<String, Object> errorResponse = new HashMap<>();
-			errorResponse.put("name", "error");
-			errorResponse.put("message", "Pan number should be in proper format (uppercase letters only).");
-			errorResponse.put("status", "Bad Request");
-			errorResponse.put("statusCode", HttpStatus.BAD_REQUEST.value());
-			logger.error("Invalid PAN format: {}", panNumber);
+			Map<String, String> errorDetails = new HashMap<>();
+
+			errorDetails.put("name", "error");
+			errorDetails.put("message", "PAN number is not valid.");
+			errorDetails.put("status", "Bad Request");
+			errorDetails.put("statusCode", String.valueOf(HttpStatus.BAD_REQUEST.value()));
+
+			errorResponse.put("error", errorDetails);
 
 			String errorResponseBodyJson = gson.toJson(errorResponse);
-			apiLog.setUrl(propertiesConfig.getPanApiURL());
-			apiLog.setRequestBody(fetchrequest.toString());
+			logger.info("Error ResponseBody: {}", errorResponseBodyJson);
+			apiLog.setUrl(APIURL);
+			apiLog.setRequestBody(requestBodyJson);
 			apiLog.setResponseBody(errorResponseBodyJson);
 			apiLog.setStatusmsg("Failed");
+			apiLog.setAuthorizationToken(propertiesConfig.getToken());
 			apiLog.setStatusCode(HttpStatus.BAD_REQUEST.value());
 			apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-			apiLog.setApiType("Pan fetch v2");
-			apiLog.setAuthorizationToken(propertiesConfig.getToken());
+			apiLog.setApiType("pan fetch v2");
+			apiLogRepository.save(apiLog);
 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseBodyJson);
 		}
 
 		try {
-			String APIURL = propertiesConfig.getPanApiURL();
-
-			logger.info("API URL: {}", APIURL);
-
-			String requestBodyJson = gson.toJson(fetchrequest);
-
+			// Create connection
 			URL url = new URL(APIURL);
 			connection = (HttpURLConnection) url.openConnection();
+
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
-
-			// connection.setRequestProperty("x-client-unique-id",
-			// propertiesConfig.getXclientuniqueid());
-
 			connection.setDoOutput(true);
 
 			apiLog.setUrl(APIURL);
@@ -115,41 +121,42 @@ public class PANDataServiceImpl implements PANDataService {
 			fetchdetails.setUrl(APIURL);
 			fetchdetails.setStatusmsg("successfully sent");
 
+			// Save request details to the repository
 			panfetchv3detailsrepository.save(fetchdetails);
 
+			// Write the request body to the connection
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
 				wr.writeBytes(requestBodyJson);
 				wr.flush();
 			}
 
+			// Get the response code
 			int responseCode = connection.getResponseCode();
 			logger.info("Response Code: {}", responseCode);
-			StringBuilder responseContent = new StringBuilder();
 
-			try (BufferedReader in = new BufferedReader(
-					new InputStreamReader(responseCode == HttpURLConnection.HTTP_OK ? connection.getInputStream()
-							: connection.getErrorStream()))) {
-				String inputLine;
-				while ((inputLine = in.readLine()) != null) {
-					responseContent.append(inputLine);
+			// If the response is successful
+			if (responseCode == HttpStatus.OK.value()) {
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+					String inputLine;
+					while ((inputLine = in.readLine()) != null) {
+						responseContent.append(inputLine);
+					}
 				}
-			}
 
-			response1 = responseContent.toString();
-			logger.info("ResponseBody: {}", response1);
-
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-				apiLog.setStatusCode(HttpStatus.OK.value());
+				// Process the response
+				response1 = responseContent.toString();
 				apiLog.setResponseBody(response1);
-
-				apiLog.setApiType("Pan fetch v2 ");
+				apiLog.setStatusCode(responseCode);
+				apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 				apiLog.setStatusmsg("Success");
+				apiLog.setApiType("Pan fetch v3");
+				logger.info("Received Response body: {}", response1);
 
+				// Parse and save the name from the response
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode jsonResponse = mapper.readTree(response1);
 				JsonNode resultNode = jsonResponse.get("result");
-
-				// Extract the 'name' from the 'result' node
 				String name = resultNode.get("name").asText();
 				fetchdetails.setName(name);
 
@@ -157,13 +164,35 @@ public class PANDataServiceImpl implements PANDataService {
 
 				return ResponseEntity.status(responseCode).body(response1);
 			} else {
-				handleHttpError(responseCode, response1, apiLog);
+				// If the response is an error, read the error stream
+				try (BufferedReader in = new BufferedReader(
+						new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
+					String inputLine;
+					while ((inputLine = in.readLine()) != null) {
+						responseContent.append(inputLine);
+					}
+				}
+
+				// Process the error response
+				response1 = responseContent.toString();
+				apiLog.setResponseBody(response1);
+				apiLog.setStatusCode(responseCode);
+				apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+				apiLog.setStatusmsg("Failure");
+				apiLog.setApiType("Pan fetch v3");
+				logger.error("Error response body: {}", response1);
+
+				// Return the error response with JSON headers
+				return ResponseEntity.status(responseCode).body(response1);
 			}
 
 		} catch (IOException e) {
+			// Handle general errors
 			handleGeneralError(e, apiLog);
 			response1 = e.getMessage();
 			logger.error("ResponseBody: {}", response1);
+
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response1);
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
@@ -172,42 +201,15 @@ public class PANDataServiceImpl implements PANDataService {
 			apiLogRepository.save(apiLog);
 			logger.info("API log saved.");
 		}
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response1);
 	}
 
-	private void handleHttpError(int responseCode, String responseBody, PANDataApiLog apiLog) {
-		HttpStatus status = HttpStatus.valueOf(responseCode);
-		apiLog.setStatusCode(responseCode);
-		apiLog.setResponseBody(responseBody);
-
-		apiLog.setApiType("Pan fetch v2 ");
-		apiLog.setStatusmsg("Failure");
-
-		logger.error("Handling HTTP error. Status code: {}, Response body: {}", responseCode, responseBody);
-
-		switch (status) {
-		case TOO_MANY_REQUESTS:
-			logger.error("Error Response: API rate limit exceeded");
-			apiLog.setResponseBodyAsJson("API rate limit exceeded");
-			break;
-		case UNAUTHORIZED:
-			logger.error("Error Response: No API key found in request");
-			apiLog.setResponseBodyAsJson("No API key found in request");
-			break;
-		default:
-			logger.error("Error Response Body: {}", responseBody);
-			apiLog.setResponseBody(responseBody);
-			break;
-		}
-	}
-
+	// Method to handle general errors
 	private void handleGeneralError(Exception e, PANDataApiLog apiLog) {
 		apiLog.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		apiLog.setResponseBody(e.getMessage());
-
-		apiLog.setApiType("Pan fetch v2 ");
-
+		apiLog.setApiType("Pan fetch v3");
 		apiLog.setStatusmsg("Failure");
+
 		Panfetchv3details fetchdetails = new Panfetchv3details();
 		panfetchrequest fetchrequest = new panfetchrequest();
 		fetchdetails.setAuthorizationToken(propertiesConfig.getToken());
@@ -216,16 +218,16 @@ public class PANDataServiceImpl implements PANDataService {
 		fetchdetails.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 		fetchdetails.setUrl(propertiesConfig.getPanApiURL());
 		fetchdetails.setStatusmsg("failed");
+
 		panfetchv3detailsrepository.save(fetchdetails);
 
 		logger.error("Exception occurred: {}", e.getMessage(), e);
 	}
 
+	// Method to validate PAN format
 	public boolean isValidPan(String panNumber) {
-
 		String panPattern = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
 		return panNumber.matches(panPattern);
-
 	}
 
 	@Override
@@ -237,15 +239,43 @@ public class PANDataServiceImpl implements PANDataService {
 		PANDataApiLog apiLog = new PANDataApiLog();
 
 		try {
-
 			String Apiurl = propertiesConfig.getPanfetchurl();
-			logger.info("Sending Api Url " + Apiurl);
+			logger.info("Sending Api URL: {}", Apiurl);
 
 			Gson gson = new Gson();
 
+			String panNumber = panfetchdto.getPanNumber();
 			requestBodyJson = gson.toJson(panfetchdto);
+			logger.info("Sending Request body: {}", requestBodyJson);
+			// Validate PAN number before proceeding
+			if (!isValidPanNumber(panNumber)) {
+				// Return error response for invalid PAN number with error object
+				Map<String, Object> errorResponse = new HashMap<>();
+				Map<String, String> errorDetails = new HashMap<>();
 
-			logger.info("Sending Request body " + requestBodyJson);
+				errorDetails.put("name", "error");
+				errorDetails.put("message", "PAN number is not valid.");
+				errorDetails.put("status", "Bad Request");
+				errorDetails.put("statusCode", String.valueOf(HttpStatus.BAD_REQUEST.value()));
+
+				errorResponse.put("error", errorDetails);
+
+				String errorResponseBodyJson = gson.toJson(errorResponse);
+				logger.info("Error ResponseBody:{}", gson.toJson(errorResponseBodyJson));
+				apiLog.setUrl(Apiurl);
+				apiLog.setRequestBody(requestBodyJson);
+				apiLog.setResponseBody(errorResponseBodyJson);
+				apiLog.setStatusmsg("Failed");
+				apiLog.setAuthorizationToken(propertiesConfig.getToken());
+				apiLog.setStatusCode(HttpStatus.BAD_REQUEST.value());
+				apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+				apiLog.setApiType("pan fetch v3");
+				apiLogRepository.save(apiLog);
+
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseBodyJson);
+			}
+
+			// Proceed if the PAN number is valid
 
 			panfetchrequestentity panfetchrequestentity = new panfetchrequestentity();
 			panfetchrequestentity.setPanNumber(panfetchdto.getPanNumber());
@@ -265,7 +295,8 @@ public class PANDataServiceImpl implements PANDataService {
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 			connection.setDoOutput(true);
-
+			// connection.setRequestProperty("x-client-unique-id",
+			// propertiesConfig.getXclientuniqueid());
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
 				wr.writeBytes(requestBodyJson);
 				wr.flush();
@@ -276,54 +307,49 @@ public class PANDataServiceImpl implements PANDataService {
 
 			StringBuilder responseContent = new StringBuilder();
 
+			// Handle success response
 			if (responseCode == HttpStatus.OK.value()) {
-
 				try (BufferedReader in = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), "utf-8"))) {
-
 					String inputLine;
 					while ((inputLine = in.readLine()) != null) {
 						responseContent.append(inputLine);
 					}
-
 				}
-				response = responseContent.toString();
 
+				response = responseContent.toString();
 				apiLog.setResponseBody(response);
 				apiLog.setStatusCode(responseCode);
 				apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 				apiLog.setStatusmsg("Success");
 				apiLog.setApiType("pan fetch v3");
-				logger.info("Recieved Response body: {}", response);
+				logger.info("Received Response body: {}", response);
 
 				return ResponseEntity.status(responseCode).body(response);
 
 			} else {
-
+				// Handle error response from API
 				try (BufferedReader in = new BufferedReader(
 						new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
-
 					String inputLine;
 					while ((inputLine = in.readLine()) != null) {
 						responseContent.append(inputLine);
 					}
-
 				}
 
 				response = responseContent.toString();
-
 				apiLog.setResponseBody(response);
 				apiLog.setStatusCode(responseCode);
 				apiLog.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 				apiLog.setStatusmsg("Failure");
 				apiLog.setApiType("pan fetch v3");
-				logger.error("Error response body:{}", response);
+				logger.error("Error response body: {}", response);
 
 				return ResponseEntity.status(responseCode).body(response);
 			}
 
 		} catch (Exception e) {
-			logger.error("Unexpected error during pan fetch ", e);
+			logger.error("Unexpected error during PAN fetch", e);
 			response = "Internal server error: " + e.getMessage();
 			apiLog.setResponseBody(response);
 			apiLog.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -332,12 +358,17 @@ public class PANDataServiceImpl implements PANDataService {
 			apiLog.setApiType("pan fetch v3");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		} finally {
-
 			if (connection != null) {
 				connection.disconnect();
 			}
 			apiLogRepository.save(apiLog);
 		}
+	}
+
+	// Method to validate PAN format
+	public boolean isValidPanNumber(String panNumber) {
+		String panPattern = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
+		return panNumber.matches(panPattern);
 	}
 
 }

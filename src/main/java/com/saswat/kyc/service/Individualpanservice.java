@@ -1,9 +1,11 @@
 package com.saswat.kyc.service;
 
+import org.springframework.http.ResponseEntity;
+
 import com.saswat.kyc.dto.IndividualPanRequest;
 
 public interface Individualpanservice {
 
 	
-	public String getPanVerification(IndividualPanRequest panRequest);
+	public ResponseEntity<String> getPanVerification(IndividualPanRequest panRequest);
 }

@@ -1,9 +1,11 @@
 package com.saswat.kyc.service;
 
+import org.springframework.http.ResponseEntity;
+
 import com.saswat.kyc.dto.Voterverificationdto;
 
 public interface Voterverificationservice {
 
-	String getVerify(Voterverificationdto voterverificationdto);
+	ResponseEntity<String> getVerify(Voterverificationdto voterverificationdto);
 
 }

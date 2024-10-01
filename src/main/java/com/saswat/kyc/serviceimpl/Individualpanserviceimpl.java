@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -38,7 +39,7 @@ public class Individualpanserviceimpl implements Individualpanservice {
 	private static final Logger logger = LoggerFactory.getLogger(Individualpanserviceimpl.class);
 
 	@Override
-	public String getPanVerification(IndividualPanRequest panRequest) {
+	public ResponseEntity<String> getPanVerification(IndividualPanRequest panRequest) {
 
 		String response1 = null;
 		IndividualPanApiLog apilog = new IndividualPanApiLog();
@@ -60,7 +61,7 @@ public class Individualpanserviceimpl implements Individualpanservice {
 			connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 			connection.setDoOutput(true);
 
-			// Log and Save Request Body
+			
 			apilog.setUrl(propertiesConfig.getIndividualPanUrl());
 			apilog.setRequestBody(requestBodyJson);
 			Individualpandetails indiviualpan = new Individualpandetails();
@@ -75,9 +76,9 @@ public class Individualpanserviceimpl implements Individualpanservice {
 
 			individualpandetailsrepository.save(indiviualpan);
 
-			// Send Request Body using DataOutputStream
+		
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
-				wr.writeBytes(urlParameters); // Writing URL-encoded parameters
+				wr.writeBytes(urlParameters); 
 				wr.flush();
 			}
 
@@ -105,6 +106,7 @@ public class Individualpanserviceimpl implements Individualpanservice {
 				apilog.setResponseBody(response1);
 				apilog.setApiType("Individual pan verification");
 				logger.info("ResponseBody: " + response1);
+				return ResponseEntity.status(responseCode).body(response1);
 			} else {
 				// Handle error stream
 				try (BufferedReader br = new BufferedReader(
@@ -125,7 +127,7 @@ public class Individualpanserviceimpl implements Individualpanservice {
 				logger.error("Error ResponseBody: " + response1);
 			}
 
-			return response1;
+			return ResponseEntity.status(responseCode).body(response1);
 
 		} catch (Exception e) {
 			apilog.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -143,7 +145,7 @@ public class Individualpanserviceimpl implements Individualpanservice {
 				connection.disconnect();
 			}
 		}
-		return response1;
+		return null;
 	}
 
 }

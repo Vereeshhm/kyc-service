@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,7 +44,7 @@ public class voterverificationserviceimpl implements Voterverificationservice {
 	Voterverificationrequestentityrepository voterverificationrequestentityrepository;
 
 	@Override
-	public String getVerify(Voterverificationdto voterverificationdto) {
+	public ResponseEntity<String> getVerify(Voterverificationdto voterverificationdto) {
 		logger.info("Starting getVerify method.");
 		voterverificationlog apiLog = new voterverificationlog();
 		String response1 = null;
@@ -75,14 +76,12 @@ public class voterverificationserviceimpl implements Voterverificationservice {
 			connection.setRequestProperty("Authorization", propertiesconfig.getToken());
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setDoOutput(true); // To allow sending request body
-			// connection.setRequestProperty("x-client-unique-id",
-			// propertiesConfig.getXclientuniqueid());
-			// Log request details
+			// connection.setRequestProperty("x-client-unique-id",propertiesconfig.getXclientuniqueid());
+
 			logger.info("Request Body: {}", requestBodyJson);
 			apiLog.setUrl(APIURL);
 			apiLog.setRequestBody(requestBodyJson);
 
-			// Send request body
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
 				wr.writeBytes(requestBodyJson);
 				wr.flush();
@@ -111,6 +110,7 @@ public class voterverificationserviceimpl implements Voterverificationservice {
 				apiLog.setStatusCode(HttpStatus.OK.value());
 				apiLog.setApiType("voter verification");
 				apiLog.setStatus("SUCCESS");
+				return ResponseEntity.status(responseCode).body(response1);
 			} else {
 				// Read error response from ErrorStream
 				try (BufferedReader br = new BufferedReader(
@@ -128,6 +128,7 @@ public class voterverificationserviceimpl implements Voterverificationservice {
 				apiLog.setStatusCode(responseCode);
 				apiLog.setStatus("FAILURE");
 				logger.error("Error ResponseBody: {}", response1);
+				return ResponseEntity.status(responseCode).body(response1);
 			}
 		} catch (IOException e) {
 			logger.error("Unexpected error occurred: {}", e.getMessage());
@@ -136,6 +137,7 @@ public class voterverificationserviceimpl implements Voterverificationservice {
 			response1 = "Internal server error: " + e.getMessage();
 			apiLog.setResponseBody(response1);
 			apiLog.setApiType("voter verification");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response1);
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
@@ -143,7 +145,7 @@ public class voterverificationserviceimpl implements Voterverificationservice {
 			logger.info("API log saved for getVerify.");
 			voterverificationlogrepository.save(apiLog);
 		}
-		return response1;
+
 	}
 
 }

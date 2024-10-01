@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,14 +45,13 @@ public class Experianbureauserviceimpl implements Experianbureauservice {
 	private static final Logger logger = LoggerFactory.getLogger(Experianbureauserviceimpl.class);
 
 	@Override
-	public String getBureauReport(Experianbureaudto bureauDto) {
+	public ResponseEntity<String> getBureauReport(Experianbureaudto bureauDto) {
 
 		logger.info("Starting bureau report retrieval for request: {}", bureauDto);
 
 		String urlString = config.getExperianbureauurl();
 		logger.info("API URL: {}", urlString);
 
-		// Log request details
 		logger.info(
 				"Request Details - PhoneNumber: {}, PAN: {}, FirstName: {}, LastName: {}, Pincode: {}, DateOfBirth: {}",
 				bureauDto.getPhoneNumber(), bureauDto.getPan(), bureauDto.getFirstName(), bureauDto.getLastName(),
@@ -81,15 +82,20 @@ public class Experianbureauserviceimpl implements Experianbureauservice {
 			connection = (HttpURLConnection) url.openConnection();
 
 			// Set up the connection properties
+
+			connection.setInstanceFollowRedirects(true);
+
+			// Set up the connection properties
 			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Authorization", config.getToken());
-			connection.setDoOutput(true); // Enable output for writing request body
-			//connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
+			connection.setDoOutput(true);
+			//connection.setRequestProperty("x-client-unique-id", config.getXclientuniqueid());
 
 			// Write request body (JSON)
 			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
-				wr.writeBytes(requestBodyJson);
+				wr.write(requestBodyJson.getBytes(StandardCharsets.UTF_8));
 				wr.flush();
 			}
 
@@ -102,7 +108,7 @@ public class Experianbureauserviceimpl implements Experianbureauservice {
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 				// Read response from InputStream
 				try (BufferedReader br = new BufferedReader(
-						new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 
 					String responseLine;
 					while ((responseLine = br.readLine()) != null) {
@@ -116,11 +122,12 @@ public class Experianbureauserviceimpl implements Experianbureauservice {
 				apiLog.setApiType("experian bureau");
 
 				apiLog.setStatus("SUCCESS");
+				return ResponseEntity.status(responseCode).body(response1);
 
 			} else {
 				// Read error response from ErrorStream
 				try (BufferedReader br = new BufferedReader(
-						new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
+						new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
 
 					String responseLine;
 					while ((responseLine = br.readLine()) != null) {
@@ -134,6 +141,8 @@ public class Experianbureauserviceimpl implements Experianbureauservice {
 
 				apiLog.setStatusCode(responseCode);
 				apiLog.setStatus("FAILURE");
+
+				return ResponseEntity.status(responseCode).body(response1);
 			}
 
 		} catch (IOException e) {
@@ -143,7 +152,7 @@ public class Experianbureauserviceimpl implements Experianbureauservice {
 			response1 = "Internal server error: " + e.getMessage();
 			apiLog.setResponseBody(response1);
 			apiLog.setApiType("experian bureau");
-
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response1);
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
@@ -151,7 +160,8 @@ public class Experianbureauserviceimpl implements Experianbureauservice {
 			experianbureaulogrepository.save(apiLog);
 			logger.info("Bureau report retrieval process completed, API log saved.");
 		}
-		return response1;
+
+		
 	}
 
 }

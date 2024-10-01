@@ -46,25 +46,27 @@ public class PropertiesConfig {
 
 	@Value("${Aaadhar_Url}")
 	private String Aaadhar_Url;
-	
-	
+
 	@Value("${Experianbureau.url}")
 	private String Experianbureauurl;
-	
+
 	@Value("${PhoneKyc.generateOtp}")
 	private String PhoneKycgenerateOtp;
-	
+
 	@Value("${PhoneKyc.submitOtp}")
 	private String PhoneKycsubmitOtp;
-	
+
 	@Value("${PhoneKyc.nonconsent}")
 	private String PhoneKycnonconsent;
-	
+
 	@Value("${countryCode}")
 	private String countryCode;
-	
+
 	@Value("${panfetch.url}")
 	private String panfetchurl;
+
+	@Value("${Electricitybill.url}")
+	private String Electricitybillurl;
 
 //	@Value("${x-client-unique-id}")
 //	private String xclientuniqueid;
@@ -76,9 +78,18 @@ public class PropertiesConfig {
 //	public void setXclientuniqueid(String xclientuniqueid) {
 //		this.xclientuniqueid = xclientuniqueid;
 //	}
+
 	
 	public String getCountryCode() {
 		return countryCode;
+	}
+
+	public String getElectricitybillurl() {
+		return Electricitybillurl;
+	}
+
+	public void setElectricitybillurl(String electricitybillurl) {
+		Electricitybillurl = electricitybillurl;
 	}
 
 	public String getPanfetchurl() {
@@ -132,8 +143,6 @@ public class PropertiesConfig {
 	public void setAaadhar_Url(String aaadhar_Url) {
 		Aaadhar_Url = aaadhar_Url;
 	}
-
-
 
 	public String getVoterverificationApiUrl() {
 		return voterverificationApiUrl;

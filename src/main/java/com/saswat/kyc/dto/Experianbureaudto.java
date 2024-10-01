@@ -1,5 +1,9 @@
 package com.saswat.kyc.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class Experianbureaudto {
 
 	private Long phoneNumber;
@@ -64,9 +68,8 @@ public class Experianbureaudto {
 
 	@Override
 	public String toString() {
-		return "Experianbureaudto [phoneNumber=" + phoneNumber + ", pan=" + pan + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", dateOfBirth=" + dateOfBirth + ", pincode=" + pincode + "]";
+		return "Experianbureaudto [phoneNumber=" + phoneNumber + ", pan=" + pan + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", dateOfBirth=" + dateOfBirth + ", pincode=" + pincode + "]";
 	}
 
-	
 }

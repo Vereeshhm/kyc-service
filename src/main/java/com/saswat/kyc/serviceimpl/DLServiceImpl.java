@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -54,7 +55,7 @@ public class DLServiceImpl implements DLService {
 	Dlverificationrequestentityrepository dlverificationrequestentityrepository;
 
 	@Override
-	public String getVerfication(Dlverificationrequest dlverificationrequest) {
+	public ResponseEntity<String> getVerfication(Dlverificationrequest dlverificationrequest) {
 	    Dlverificationapilog apiLog = new Dlverificationapilog();
 	    String response1 = null;
 	    HttpURLConnection connection = null;
@@ -81,7 +82,7 @@ public class DLServiceImpl implements DLService {
 	        connection.setRequestMethod("POST");
 	        connection.setRequestProperty("Content-Type", "application/json");
 	        connection.setRequestProperty("Accept", "application/json");
-	        //connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
+	    //  connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 	        connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 	        connection.setDoOutput(true);
 
@@ -99,7 +100,7 @@ public class DLServiceImpl implements DLService {
 	        int responseCode = connection.getResponseCode();
 	        logger.info("Response Code: {}", responseCode);
 
-	        // Check if the response was successful (HTTP 200)
+	        // Check if the response was successful (HTTP 200)	
 	        StringBuilder response = new StringBuilder();
 	        if (responseCode == HttpStatus.OK.value()) {
 	            // Read the response from the input stream
@@ -116,6 +117,7 @@ public class DLServiceImpl implements DLService {
 	            apiLog.setResponseBody(response1);
 	            apiLog.setStatusCode(HttpStatus.OK.value());
 	            apiLog.setApiType("Dl verification");
+	            return ResponseEntity.status(responseCode).body(response1);
 	        } else {
 	            // If an error response (non-200), read from the error stream
 	            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
@@ -132,6 +134,8 @@ public class DLServiceImpl implements DLService {
 	            apiLog.setApiType("Dl verification");
 	            apiLog.setStatusCode(responseCode);
 	            logger.error("Error ResponseBody: {}", response1);
+	            
+	            return ResponseEntity.status(responseCode).body(response1);
 	        }
 
 	    } catch (Exception e) {
@@ -140,6 +144,7 @@ public class DLServiceImpl implements DLService {
 	        response1 = "Internal server error: " + e.getMessage();
 	        apiLog.setApiType("Dl verification");
 	        apiLog.setResponseBody(response1);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response1);
 	    } finally {
 	        dlverificationlogrepository.save(apiLog);
 	        logger.debug("DL verification process completed, API log saved.");
@@ -147,12 +152,12 @@ public class DLServiceImpl implements DLService {
 	            connection.disconnect();
 	        }
 	    }
-	    return response1;
+	    
 	}
 
 
 	@Override
-	public String getFetchDetails(DLnumberrequest dlnumberrequest) {
+	public ResponseEntity<String> getFetchDetails(DLnumberrequest dlnumberrequest) {
 	    logger.info("Starting DL details fetch process for DTO: {}", dlnumberrequest);
 	    Dlnumbrfetchapilog apiLogentity = new Dlnumbrfetchapilog();
 	    String response1 = null;
@@ -182,7 +187,7 @@ public class DLServiceImpl implements DLService {
 	        connection.setRequestProperty("Authorization", propertiesConfig.getToken());
 	        connection.setRequestProperty("Accept", "application/json"); // Added as per request
 	        connection.setDoOutput(true);
-	       // connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
+	    // connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
 
 	        // Log the request
 	        logger.info("Sending DL details fetch request to API URL: {}, Request Body: {}", APIURL, requestBody);
@@ -216,6 +221,8 @@ public class DLServiceImpl implements DLService {
 	            apiLogentity.setResponseBody(response1);
 	            apiLogentity.setStatusCode(HttpStatus.OK.value());
 	            apiLogentity.setApiType("Dl numberbased");
+	            
+	            return ResponseEntity.status(responseCode).body(response1);
 	        } else {
 	            // If an error response (non-200), read from the error stream
 	            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
@@ -231,6 +238,7 @@ public class DLServiceImpl implements DLService {
 	            apiLogentity.setStatusCode(responseCode);
 	            apiLogentity.setApiType("Dl numberbased");
 	            logger.error("Error ResponseBody: {}", response1);
+	            return ResponseEntity.status(responseCode).body(response1);
 	        }
 
 	    } catch (IOException e) {
@@ -239,6 +247,7 @@ public class DLServiceImpl implements DLService {
 	        response1 = "Internal server error: " + e.getMessage();
 	        apiLogentity.setApiType("Dl numberbased");
 	        apiLogentity.setResponseBody(response1);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response1);
 	    } finally {
 	        dlnumberfetchlogrepository.save(apiLogentity);
 	        logger.info("DL details fetch process completed, API log saved.");
@@ -246,7 +255,7 @@ public class DLServiceImpl implements DLService {
 	            connection.disconnect();
 	        }
 	    }
-	    return response1;
+	    
 	}
 
 }

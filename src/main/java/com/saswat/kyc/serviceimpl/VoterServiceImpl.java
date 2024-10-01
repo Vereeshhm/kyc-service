@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -54,7 +55,7 @@ public class VoterServiceImpl implements Voterservice {
 	PropertiesConfig propertiesconfig;
 
 	@Override
-	public String getfetchAll(Voterdetaileddto voterdetaileddto) {
+	public ResponseEntity<String> getfetchAll(Voterdetaileddto voterdetaileddto) {
 		logger.info("Starting getfetchAll method.");
 		voterdetailedlog apiLog = new voterdetailedlog();
 		String response1 = null;
@@ -83,7 +84,7 @@ public class VoterServiceImpl implements Voterservice {
 			connection.setRequestProperty("Authorization", propertiesconfig.getToken());
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setDoOutput(true);
-			//connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
+			//connection.setRequestProperty("x-client-unique-id",propertiesconfig.getXclientuniqueid());
 
 			// Log request details
 			logger.info("RequestBody: {}", requestBodyJson);
@@ -115,6 +116,7 @@ public class VoterServiceImpl implements Voterservice {
 				apiLog.setResponseBody(response1);
 				apiLog.setStatusCode(HttpStatus.OK.value());
 				apiLog.setApiType("voter detailedsearch");
+				return ResponseEntity.status(responseCode).body(response1);
 			} else {
 				// Handle non-200 responses
 				try (BufferedReader in = new BufferedReader(
@@ -130,6 +132,8 @@ public class VoterServiceImpl implements Voterservice {
 				apiLog.setStatusCode(responseCode);
 				apiLog.setApiType("voter detailedsearch");
 				logger.error("Error ResponseBody: {}", response1);
+
+				return ResponseEntity.status(responseCode).body(response1);
 			}
 		} catch (IOException e) {
 			logger.error("Unexpected error occurred: {}", e.getMessage());
@@ -137,6 +141,7 @@ public class VoterServiceImpl implements Voterservice {
 			response1 = "Internal server error: " + e.getMessage();
 			apiLog.setApiType("voter detailedsearch");
 			apiLog.setResponseBody(response1);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response1);
 		} finally {
 			voterdetailedlogrepository.save(apiLog);
 			logger.info("API log saved for getfetchAll.");
@@ -144,106 +149,112 @@ public class VoterServiceImpl implements Voterservice {
 				connection.disconnect();
 			}
 		}
-		return response1;
+
 	}
 
 	@Override
-	public String getfetchdetails(Voterfetchdto voterfetchdto) {
-	    logger.info("Starting getfetchdetails method.");
-	    Voterfetchlog apiLog1 = new Voterfetchlog();
-	    String response2 = null;
-	    HttpURLConnection connection = null;
+	public ResponseEntity<String> getfetchdetails(Voterfetchdto voterfetchdto) {
+		logger.info("Starting getfetchdetails method.");
+		Voterfetchlog apiLog1 = new Voterfetchlog();
+		String response2 = null;
+		HttpURLConnection connection = null;
 
-	    try {
-	        // Prepare API URL
-	        String APIURL = propertiesconfig.getVotersearchApiURl();
-	        logger.info("API URL: {}", APIURL);
+		try {
+			// Prepare API URL
+			String APIURL = propertiesconfig.getVotersearchApiURl();
+			logger.info("API URL: {}", APIURL);
 
-	        // Convert request data to JSON
-	        Gson gson = new Gson();
-	        String requestBodyJson = gson.toJson(voterfetchdto);
+			// Convert request data to JSON
+			Gson gson = new Gson();
+			String requestBodyJson = gson.toJson(voterfetchdto);
 
-	        // Save request data in the database
-	        voterfetchrequestentity voterfetchrequestentity = new voterfetchrequestentity();
-	        voterfetchrequestentity.setEpicNumber(voterfetchdto.getEpicNumber());
-	        voterfetchrequestentity.setName(voterfetchdto.getName());
-	        voterfetchrequestentity.setStatusmsg("successfully sent");
-	        voterfetchrequestentity.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-	        voterfetchrequestentityrepository.save(voterfetchrequestentity);
+			// Save request data in the database
+			voterfetchrequestentity voterfetchrequestentity = new voterfetchrequestentity();
+			voterfetchrequestentity.setEpicNumber(voterfetchdto.getEpicNumber());
+			voterfetchrequestentity.setName(voterfetchdto.getName());
+			voterfetchrequestentity.setStatusmsg("successfully sent");
+			voterfetchrequestentity.setTimestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+			voterfetchrequestentityrepository.save(voterfetchrequestentity);
 
-	        // Initialize HttpURLConnection
-	        URL url = new URL(APIURL);
-	        connection = (HttpURLConnection) url.openConnection();
-	        connection.setRequestMethod("POST");
-	        connection.setRequestProperty("Content-Type", "application/json");
-	        connection.setRequestProperty("Authorization", propertiesconfig.getToken());
-	        connection.setRequestProperty("Accept", "application/json");
-	        connection.setDoOutput(true); // To allow sending request body
-	        
-	        //connection.setRequestProperty("x-client-unique-id", propertiesConfig.getXclientuniqueid());
+			// Initialize HttpURLConnection
+			URL url = new URL(APIURL);
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setRequestProperty("Authorization", propertiesconfig.getToken());
+			connection.setRequestProperty("Accept", "application/json");
+			connection.setDoOutput(true); // To allow sending request body
 
-	        // Log request details
-	        logger.info("RequestBody: {}", requestBodyJson);
-	        apiLog1.setUrl(APIURL);
-	        apiLog1.setRequestBody(requestBodyJson);
+			// connection.setRequestProperty("x-client-unique-id",
+			// propertiesConfig.getXclientuniqueid());
 
-	        // Send request body
-	        try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
-	            wr.writeBytes(requestBodyJson);
-	            wr.flush();
-	        }
+			// Log request details
+			logger.info("RequestBody: {}", requestBodyJson);
+			apiLog1.setUrl(APIURL);
+			apiLog1.setRequestBody(requestBodyJson);
 
-	        // Get the response code
-	        int responseCode = connection.getResponseCode();
-	        logger.info("Response Code: {}", responseCode);
+			// Send request body
+			try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+				wr.writeBytes(requestBodyJson);
+				wr.flush();
+			}
 
-	        // Handle the response
-	        StringBuilder response = new StringBuilder();
-	        if (responseCode == HttpURLConnection.HTTP_OK) {
-	            // Read response from InputStream
-	            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
-	                
-	                String responseLine;
-	                while ((responseLine = br.readLine()) != null) {
-	                    response.append(responseLine.trim());
-	                }
-	              
-	            }
-	            response2 = response.toString();
-                logger.info("Received Response: {}", response2);
-	            apiLog1.setResponseBody(response2);
-	            apiLog1.setApiType("voter fetch");
-	            apiLog1.setStatusCode(HttpStatus.OK.value());
-	        } else {
-	            // Read error response from ErrorStream
-	            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
-	                
-	                String responseLine;
-	                while ((responseLine = br.readLine()) != null) {
-	                    response.append(responseLine.trim());
-	                }
-	                
-	            }
-	            response2 = response.toString();
-	            apiLog1.setResponseBody(response2);
-	            apiLog1.setStatusCode(responseCode);
-	            apiLog1.setApiType("voter fetch");
-	            logger.error("Error ResponseBody: {}", response2);
-	        }
-	    } catch (IOException e) {
-	        logger.error("Unexpected error occurred: {}", e.getMessage());
-	        apiLog1.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-	        response2 = e.getMessage();
-	        apiLog1.setApiType("voter fetch");
-	        apiLog1.setResponseBody(response2);
-	    } finally {
-	        if (connection != null) {
-	            connection.disconnect();
-	        }
-	        voterfetchlogrepository.save(apiLog1);
-	        logger.info("API log saved for getfetchdetails.");
-	    }
-	    return response2;
+			// Get the response code
+			int responseCode = connection.getResponseCode();
+			logger.info("Response Code: {}", responseCode);
+
+			// Handle the response
+			StringBuilder response = new StringBuilder();
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				// Read response from InputStream
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine.trim());
+					}
+
+				}
+				response2 = response.toString();
+				logger.info("Received Response: {}", response2);
+				apiLog1.setResponseBody(response2);
+				apiLog1.setApiType("voter fetch");
+				apiLog1.setStatusCode(HttpStatus.OK.value());
+				return ResponseEntity.status(responseCode).body(response2);
+			} else {
+				// Read error response from ErrorStream
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
+
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine.trim());
+					}
+
+				}
+				response2 = response.toString();
+				apiLog1.setResponseBody(response2);
+				apiLog1.setStatusCode(responseCode);
+				apiLog1.setApiType("voter fetch");
+				logger.error("Error ResponseBody: {}", response2);
+				return ResponseEntity.status(responseCode).body(response2);
+			}
+		} catch (IOException e) {
+			logger.error("Unexpected error occurred: {}", e.getMessage());
+			apiLog1.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response2 = e.getMessage();
+			apiLog1.setApiType("voter fetch");
+			apiLog1.setResponseBody(response2);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response2);
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+			voterfetchlogrepository.save(apiLog1);
+			logger.info("API log saved for getfetchdetails.");
+		}
+
 	}
 
 }
